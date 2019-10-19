@@ -81,7 +81,7 @@ class GameView {
         $this->message = "Thank you for playing!";
     }
   
-    private function setGameActionButtons() : string {
+    private function setGameActionButtons() : string{
         if ($this->isGameOn()) {
             return '
                 <input type="submit" name="' . self::$hit . '" value="Hit" />
@@ -106,16 +106,9 @@ class GameView {
                 <h2>Welcome to Card Game 21!</h2>
                     <p>To start a new game press new game!</p>
                     <form method="post" action"?">
-                    <input type="submit" name="' . self::$hit . '" value="Hit" />
-                    <input type="submit" name="' . self::$stand . '" value="Stand" />
-                    <input type="submit" name="' . self::$quit . '" value="Quit" />
-                    <input type="submit" name="' . self::$startGame .'" value="New Game" />
+                        ' . $this->setGameActionButtons() . '
                     </form>
                     <div>
-                        ' . $this->playerCards .'
-                        ' . $this->playerScore. '
-                        ' . $this->dealerCards . '
-                        ' . $this->dealerScore. '
                     </div>
                     <div>
                         <p>' . $this->message . '</p>
