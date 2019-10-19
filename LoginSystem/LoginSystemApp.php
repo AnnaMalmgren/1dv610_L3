@@ -38,20 +38,20 @@ class LoginSystemApp {
         return $this->loginView->isLoggedIn();
     }
 
-    public function renderViews() {   
+    public function renderViews($loggedInView) {   
         if ($this->regController->getUserIsRegistered()) {
-            $this->renderLoginView(); 
+            $this->renderLoginView($loggedInView); 
         } else {
             $this->view->userClicksRegisterLink() ? 
-            $this->renderRegisterView() : $this->renderLoginView();
+            $this->renderRegisterView($loggedInView) : $this->renderLoginView($loggedInView);
         }
     }
 
-    private function renderRegisterView() {
-        $this->view->render($this->isUserLoggedIn(), $this->regView, $this->timeView);
+    private function renderRegisterView($loggedInView) {
+        $this->view->render($this->isUserLoggedIn(), $this->regView, $this->timeView, $loggedInView);
     }
 
-    private function renderLoginView() {
-        $this->view->render($this->isUserLoggedIn(), $this->loginView, $this->timeView);
+    private function renderLoginView($loggedInView) {
+        $this->view->render($this->isUserLoggedIn(), $this->loginView, $this->timeView, $loggedInView);
     }
 }

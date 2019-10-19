@@ -34,6 +34,6 @@ class App {
     }
 
     private function renderViews() {
-        $this->loginSystem->renderViews();
+        $this->loginSystem->renderViews($this->gameView);
     }
 }

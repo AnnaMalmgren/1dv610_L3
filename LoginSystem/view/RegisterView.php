@@ -71,7 +71,7 @@ class RegisterView extends LoginView {
 	}
 
 	public function setInvalidCharactersMessage() {
-		$this->message = 'Username contains invalid characters';
+		$this->message = 'Username contains invalid characters.';
 	}
 
 	public function setUserExistsMessage() {

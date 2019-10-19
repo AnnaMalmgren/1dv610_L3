@@ -35,6 +35,7 @@ class LayoutView {
           
           <div class="container">
               ' . $v->response($isLoggedIn) . '
+              ' . $gameView->response($isLoggedIn) . '
               
               ' . $dtv->show() . '
           </div>
