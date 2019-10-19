@@ -124,7 +124,7 @@ class RegisterView extends LoginView {
                     	<label for="' . self::$passwordRepeat . '">Repeat password :</label>
 						<input type="password" id="' . self::$passwordRepeat . '" name="' . self::$passwordRepeat . '" 
 						class="form-control" />
-					<div class="form-group">
+					</div>
 						<input id ="submit" type="submit" name=' . self::$register . ' value="Register" 
 						class="btn btn-primary mt-2 mb-2"/>
 				</form>
