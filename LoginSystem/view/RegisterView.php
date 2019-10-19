@@ -11,6 +11,7 @@ class RegisterView extends LoginView {
 	private static $messageId = 'RegisterView::Message';
 	private static $register = 'RegisterView::Register';
 	private $message = "";
+	private $messageStyle = "";
 	
 
 	public function getRequestName() : string {
@@ -54,8 +55,13 @@ class RegisterView extends LoginView {
 		return $this->getRequestPwd() == $this->getRequestPwdRepeat();
 	}
 
+	private function setAlertDangerStyle() {
+		$this->messageStyle = 'class="alert alert-danger"';
+	}
+
 	public function setCredentialsMissingMsg() {
 		if ($this->isFieldMissing()) {
+			$this->setAlertDangerStyle();
 			$userNameMsg = 'Username has too few characters, at least 3 characters.';
 			$PwdMsg = 'Password has too few characters, at least 6 characters.';
 			$this->message = "$userNameMsg<br>$PwdMsg";
@@ -63,22 +69,27 @@ class RegisterView extends LoginView {
 	}
 
 	public function setToShortUsernameMessage() {
+		$this->setAlertDangerStyle();
 		$this->message = 'Username has too few characters, at least 3 characters.';
 	}
 
 	public function setToShortPwdMessage() {
+		$this->setAlertDangerStyle();
 		$this->message = 'Password has too few characters, at least 6 characters.';
 	}
 
 	public function setInvalidCharactersMessage() {
+		$this->setAlertDangerStyle();
 		$this->message = 'Username contains invalid characters.';
 	}
 
 	public function setUserExistsMessage() {
+		$this->setAlertDangerStyle();
 		$this->message = 'User exists, pick another username.';
 	}
 
 	public function setPwdsDontMatchMessage() {
+		$this->setAlertDangerStyle();
 		$this->message = 'Passwords do not match.';
 	}
 
@@ -94,25 +105,30 @@ class RegisterView extends LoginView {
 	*/
 	private function generateRegisterFormHTML($message) {
 		return '
-			<a href="?">Back to login</a>
-			<form action="?register" method="post" enctype="multipart/form-data"> 
-				<fieldset>
+			<div class="container m-3">
+				<a href="?" class="text-decoration-none mt-3 mb-2 text-primary">Back to login</a>
+				<form action="?register" method="post" enctype="multipart/form-data" class="w-50">
 					<legend>Register a new user - Write username and password</legend>
-					<p id="' . self::$messageId . '">' . $message . '</p>
-					
-					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getFilteredName() . '" />
-                    <br>
-					<label for="' . self::$password . '">Password :</label>
-					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
-                    <br>
-                    <label for="' . self::$passwordRepeat . '">Repeat password :</label>
-					<input type="password" id="' . self::$passwordRepeat . '" name="' . self::$passwordRepeat . '" />
-                    <br>
-                    <input id ="submit" type="submit" name=' . self::$register . ' value="Register" />
-                    <br>
-				</fieldset>
-			</form>
+					<p id="' . self::$messageId . '" ' . $this->messageStyle . '>' . $message . '</p>
+					<div class="form-group">	
+						<label for="' . self::$name . '">Username :</label>
+						<input type="text" id="' . self::$name . '" name="' . self::$name . '" 
+						value="' . $this->getFilteredName() . '" class="form-control"/>
+					</div>
+					<div class="form-group">
+						<label for="' . self::$password . '">Password :</label>
+						<input type="password" id="' . self::$password . '" name="' . self::$password . '" 
+						class="form-control"/>
+					</div>	
+					<div class="form-group">
+                    	<label for="' . self::$passwordRepeat . '">Repeat password :</label>
+						<input type="password" id="' . self::$passwordRepeat . '" name="' . self::$passwordRepeat . '" 
+						class="form-control" />
+					<div class="form-group">
+						<input id ="submit" type="submit" name=' . self::$register . ' value="Register" 
+						class="btn btn-primary mt-2 mb-2"/>
+				</form>
+			</div>
 		';
 	}
 

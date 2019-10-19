@@ -2,13 +2,9 @@
 namespace View;
 
 class LayoutView {
-  
   private static $registerLink = "register";
-  private $link = "";
-
-  public function setLink($link) {
-    $this->link = $link;
-  }
+  private static $title = "CardGame";
+  private $bootstrapCSS = '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">';
 
 
   /**
@@ -24,32 +20,33 @@ class LayoutView {
       <html>
         <head>
           <meta charset="utf-8">
-          <title>Login Example</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+          ' . $this->bootstrapCSS . '
+          <title>' . self::$title .'</title>
         </head>
         <body>
-          <h1>Assignment 2</h1>
-
-          ' . $this->link . '
-
-          ' . $this->renderIsLoggedIn($isLoggedIn) . '
-          
-          <div class="container">
+          <div class="mt-3 ml-4">
+            <h2>CardGame 21</h2>
+              ' . $this->renderIsLoggedIn($isLoggedIn) . '
               ' . $v->response($isLoggedIn) . '
+            </div>
+            <div class="container">
               ' . $gameView->response($isLoggedIn) . '
               
               ' . $dtv->show() . '
+            </div>
           </div>
-         </body>
+        </body>
       </html>
     ';
   }
 
   private function renderIsLoggedIn($isLoggedIn) {
     if ($isLoggedIn) {
-      return '<h2>Logged in</h2>';
+      return '<h2 class="text-muted d-flex justify-content-start">Logged in</h2>';
     }
     else {
-      return '<h2>Not logged in</h2>';
+      return '<h2 class="text-muted d-flex justify-content-start">Not logged in</h2>';
     }
   }
 }

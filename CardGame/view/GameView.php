@@ -39,7 +39,7 @@ class GameView {
     }
 
     private function setPlayerHand($handOfCards) {
-        $this->playerCards .= '<h3>Your Hand</h3>' . $this->getHTMLHand($handOfCards);
+        $this->playerCards .= '<h3 class="mt-2 mb-2">Your Hand</h3>' . $this->getHTMLHand($handOfCards);
     }
 
     private function setPlayerScore($score) {
@@ -49,7 +49,9 @@ class GameView {
     private function getHTMLHand($cards) : string {
         $handToReturn = "";
         foreach ($cards as $card) {
-             $handToReturn .= '<p>' . self::FACES[$card->getRank()] . ' of ' . $card->getSuit() . '</p>';
+             $handToReturn .= '<p class="text-monospace">
+             ' . self::FACES[$card->getRank()] . ' of ' . $card->getSuit() . 
+             '</p>';
          }
          return $handToReturn;
      }
@@ -60,7 +62,7 @@ class GameView {
      }
 
     private function setDealerHand($handOfCards) {
-        $this->dealerCards .= '<h3>Dealer Hand</h3>' . $this->getHTMLHand($handOfCards);
+        $this->dealerCards .= '<h3 class="mt-2 mb-2">Dealer Hand</h3>' . $this->getHTMLHand($handOfCards);
     }
 
     private function setDealerScore($score) {
@@ -68,28 +70,28 @@ class GameView {
     }
 
     public function setPlayerWon() {
-        $this->message = "Congratulations you won!";
+        $this->message = '<p class="alert alert-success">Congratulations you won!</p>';
 
     }
 
     public function setPlayerLost() {
-        $this->message = "You Lost!";
+        $this->message = '<p class="alert alert-danger">You Lost!</p>';
     }
    
 
     public function setQuitMsg() {
-        $this->message = "Thank you for playing!";
+        $this->message = '<p class="alert alert-info">Thank you for playing!</p>';
     }
   
     private function setGameActionButtons() : string {
         if ($this->isGameOn()) {
             return '
-                <input type="submit" name="' . self::$hit . '" value="Hit" />
-                <input type="submit" name="' . self::$stand . '" value="Stand" />
-                <input type="submit" name="' . self::$quit . '" value="Quit" />';
+                <input type="submit" name="' . self::$hit . '" value="Hit" class="btn btn-success"/>
+                <input type="submit" name="' . self::$stand . '" value="Stand" class="btn btn-success"/>
+                <input type="submit" name="' . self::$quit . '" value="Quit"  class="btn btn-danger"/>';
         } else {
             return'
-                <input type="submit" name="' . self::$startGame .'" value="New Game" />';
+                <input type="submit" name="' . self::$startGame .'" value="New Game" class="btn btn-success"/>';
         }
     }
 
@@ -102,23 +104,24 @@ class GameView {
     public function response($isLoggedIn) {
         if ($isLoggedIn) {
             return '
-            <div>
+            <div class="container w-50">
                 <h2>Welcome to Card Game 21!</h2>
                     <p>To start a new game press new game!</p>
-                    <form method="post">
+                    <form method="post" class="m-4">
                         ' . $this->setGameActionButtons() . '
                     </form>
-                    <div>
-                        ' . $this->playerCards .'
-                        ' . $this->playerScore. '
-                        ' . $this->dealerCards . '
-                        ' . $this->dealerScore. '
+                    <div class="row border border-success m-3 p-2">
+                        <div class="col-sm">
+                            ' . $this->playerCards .'
+                            ' . $this->playerScore. '
+                        </div>
+                        <div class="col-sm">
+                            ' . $this->dealerCards . '
+                            ' . $this->dealerScore. '
+                        </div>
                     </div>
-                    <div>
-                        <p>' . $this->message . '</p>
-                    </div>
-            </div>
-            ';
+                    ' . $this->message . '
+            </div>';
         }
     
     }
