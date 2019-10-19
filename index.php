@@ -16,7 +16,7 @@ ini_set( 'session.use_trans_sid', FALSE );
 
 //create and run app.
 $app = new App();
-
+echo "Hello World";
 $app->runApp();
 
 
