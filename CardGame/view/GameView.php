@@ -89,7 +89,7 @@ class GameView {
                 <input type="submit" name="' . self::$quit .'" value="Quit" />';
         } else {
             return'
-                <input type="submit" name="' . self::$startGame .'" value="New Game">';
+                <input type="submit" name="' . self::$startGame .'" value="New Game" />';
         }
     }
 
@@ -105,7 +105,7 @@ class GameView {
             <div>
                 <h1>Welcome to Card Game 21!</h1>
                     <p>To start a new game press new game!</p>
-                    <form method="Post" action"?">
+                    <form method="post" action"?">
                         ' . $this->setGameActionButtons() . '
                     </form>
                     <div class="cards">
