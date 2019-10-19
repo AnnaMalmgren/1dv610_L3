@@ -19,7 +19,7 @@ class LayoutView {
 		return isset($_GET[self::$registerLink]);
 	}
   
-  public function render($isLoggedIn, LoginView $v, DateTimeView $dtv, GameView $gameView) {
+  public function render($isLoggedIn, LoginView $v, DateTimeView $dtv) {
     echo '<!DOCTYPE html>
       <html>
         <head>
@@ -35,7 +35,6 @@ class LayoutView {
           
           <div class="container">
               ' . $v->response($isLoggedIn) . '
-              ' . $gameView->response($isLoggedIn) . '
               
               ' . $dtv->show() . '
           </div>
