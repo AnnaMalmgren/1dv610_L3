@@ -25,12 +25,15 @@ class LayoutView {
           <title>' . self::$title .'</title>
         </head>
         <body>
-     
-            <div class="container">
+          <div class="mt-3 ml-4">
+            <h2>CardGame 21</h2>
+              ' . $this->renderIsLoggedIn($isLoggedIn) . '
+              ' . $v->response($isLoggedIn) . '
+          </div>
+          <div class="container">
               ' . $gameView->response($isLoggedIn) . '
               
               ' . $dtv->show() . '
-            </div>
           </div>
         </body>
       </html>
