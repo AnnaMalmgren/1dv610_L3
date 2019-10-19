@@ -2,6 +2,7 @@
 namespace View;
 
 require_once(__DIR__ . '/../model/UserCredentials.php');
+require_once('Exceptions/UserCredentialsException.php');
 
 class LoginView {
 	private static $login = 'LoginView::Login';
@@ -45,6 +46,12 @@ class LoginView {
 	}
 	
 	private function getLoginCredentials() : \Model\UserCredentials {
+		if (empty($this->getRequestName())) {
+			throw new UsernameMissingException();
+		} 
+		if (empty( $this->getRequestPwd())) {
+			throw new PasswordMissingException();
+		}
 		return new \Model\UserCredentials($this->getRequestName(), $this->getRequestPwd());
 	}
 

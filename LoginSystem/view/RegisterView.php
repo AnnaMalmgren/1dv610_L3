@@ -2,6 +2,7 @@
 namespace View;
 
 require_once(__DIR__ . '/../model/User.php');
+require_once('Exceptions/UserCredentialsException.php');
 
 class RegisterView extends LoginView {
 	private static $name = 'RegisterView::UserName';
@@ -35,16 +36,22 @@ class RegisterView extends LoginView {
 		return "";
 	}
 
+	public function getRegUserCredentials() : \Model\UserCredentials {
+		if (!$this->passwordsMatch()) {
+			throw new PasswordsDontMatchException(); 
+		}
+		if ($this->isFieldMissing()) {
+			throw new FieldsMissingException();
+		}
+		return new \Model\UserCredentials($this->getRequestName(), $this->getRequestPwd());
+	}
+
 	public function isFieldMissing() : bool {
 		return empty($this->getRequestName()) && empty($this->getRequestPwd());
 	}
 
-	public function doesPasswordsMatch() : bool {
+	public function passwordsMatch() : bool {
 		return $this->getRequestPwd() == $this->getRequestPwdRepeat();
-	}
-
-	public function getUser() : \Model\User {
-		return new \Model\User($this->getRequestName(), $this->getRequestPwd());
 	}
 
 	public function setCredentialsMissingMsg() {

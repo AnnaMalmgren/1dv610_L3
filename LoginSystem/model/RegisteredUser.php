@@ -10,9 +10,9 @@ class RegisteredUser {
     private $registeredUser;
     private $storage;
 
-    public function __construct(UserCredentials $credentials) {
+    public function __construct(UserCredentials $user) {
             $this->storage = new DbUserTable();
-            $this->setRegisteredUser($credentials);
+            $this->setRegisteredUser($user);
             $this->storage->saveUser($this->registeredUser);
     }
 

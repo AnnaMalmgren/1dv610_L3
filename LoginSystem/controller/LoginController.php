@@ -18,16 +18,15 @@ class LoginController {
         try {
                 $this->tryLoginUser();
 
-        } catch (\Model\UsernameMissingException $e) {
+        } catch (\View\UsernameMissingException $e) {
             $this->view->setNoUsernamegMsg();
-        } catch (\Model\PasswordMissingException $e) {
+        } catch (\View\PasswordMissingException $e) {
             $this->view->setNoPasswordMsg();
         } catch (\Model\WrongCredentialsException $e) {
             $this->view->setWrongNameOrPwdMsg();
         } 
     }
    
-
     private function tryLoginUser() {
         if ($this->view->userWantsToLogin()) {
             $userCredentials = $this->view->getUserCredentials();

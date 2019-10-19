@@ -2,7 +2,6 @@
 namespace Controller;
 
 require_once(__DIR__ . '/../model/RegisteredUser.php');
-require_once(__DIR__ . '/../model/User.php');
 
 class RegisterController {
     private $userIsRegistered = FALSE;
@@ -18,46 +17,34 @@ class RegisterController {
         try {
                 $this->doRegisterUser();
 
+        } catch (\View\FieldsMissingException $e) {
+            $this->view->setCredentialsMissingMsg();
         } catch (\Model\ToShortUserNameException $e) {
             $this->view->setToShortUsernameMessage();
         } catch (\Model\ToShortPasswordException $e) {
             $this->view->setToShortPwdMessage();
         } catch (\Model\InvalidCharactersException $e) {
             $this->view->setInvalidCharactersMessage();
+        } catch (\View\PasswordsDontMatchException $e) {
+            $this->view->setPwdsDontMatchMessage();
         } catch (\Model\UsernameExistsException $e) {
             $this->view->setUserExistsMessage();
         } 
     }
-    
-    //TODO BREAK OUT TO SMALLER.
+
     private function doRegisterUser() {
         if($this->view->userWantsToRegister()) {
-            if ($this->isCredentialsValid()) {
-                $user = $this->view->getUser();
-                $registeredUser = new \Model\RegisteredUser($user);
-                $this->setSuccesfullRegisterView($user);
-            } else {
-                $this->setNotValidCredentialsMsg();
-            }
+            $userCredentials = $this->view->getRegUserCredentials();
+            $registeredUser = new \Model\RegisteredUser($userCredentials);
+            $this->setSuccesfullRegisterView($userCredentials->getUsername());
         }
     }
 
-    private function isCredentialsValid() {
-       return !$this->view->isFieldMissing() && $this->view->doesPasswordsMatch();
-    }
 
-    private function setSuccesfullRegisterView(\Model\User $user) {
+    private function setSuccesfullRegisterView($username) {
         $this->loginView->setUserRegisteredMsg();
-        $this->loginView->setUsername($user->getUsername());
+        $this->loginView->setUsername($username);
         $this->userIsRegistered = TRUE;   
-    }
-
-    private function setNotValidCredentialsMsg() {
-        if ($this->view->isFieldMissing()) {
-            $this->view->setCredentialsMissingMsg();
-        } else if (!$this->view->doesPasswordsMatch()) {
-            $this->view->setPwdsDontMatchMessage();
-        }
     }
     
     public function getUserIsRegistered() {
