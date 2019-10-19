@@ -84,12 +84,12 @@ class GameView {
     private function setGameActionButtons() {
         if ($this->isGameOn()) {
             return '
-                <input type="submit" name="' . self::$hit .'" value="Hit"></input>
-                <input type="submit" name="' . self::$stand .'" value="Stand"></input>
-                <input type="submit" name="' . self::$quit .'" value="Quit"></input>';
+                <input type="submit" name="' . self::$hit .'" value="Hit" />
+                <input type="submit" name="' . self::$stand .'" value="Stand" />
+                <input type="submit" name="' . self::$quit .'" value="Quit" />';
         } else {
             return'
-                <input type="submit" name="' . self::$startGame .'" value="New Game"></input>';
+                <input type="submit" name="' . self::$startGame .'" value="New Game">';
         }
     }
 
