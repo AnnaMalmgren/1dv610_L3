@@ -106,7 +106,6 @@ class GameView {
                 <h2>Welcome to Card Game 21!</h2>
                     <p>To start a new game press new game!</p>
                     <form method="post" action"?">
-                        ' . $this->setGameActionButtons() . '
                     </form>
             </div>
             ';
