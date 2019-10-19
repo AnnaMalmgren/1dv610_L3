@@ -1,7 +1,7 @@
 <?php
 namespace View;
 
-require_once(__DIR__ . '/../model/UserCredentials.php');
+require_once(__DIR__ . '/../model/User.php');
 
 class RegisterView extends LoginView {
 	private static $name = 'RegisterView::UserName';
@@ -31,9 +31,8 @@ class RegisterView extends LoginView {
 	private function getFilteredName() : string {
 		if ($this->userWantsToRegister()) {
 			return strip_tags($this->getRequestName());
-		} else {
-			 return "";
-		 }
+		}
+		return "";
 	}
 
 	public function isFieldMissing() : bool {
@@ -44,8 +43,8 @@ class RegisterView extends LoginView {
 		return $this->getRequestPwd() == $this->getRequestPwdRepeat();
 	}
 
-	public function getUser() : \Model\UserCredentials {
-		return new \Model\UserCredentials($this->getRequestName(), $this->getRequestPwd());
+	public function getUser() : \Model\User {
+		return new \Model\User($this->getRequestName(), $this->getRequestPwd());
 	}
 
 	public function setCredentialsMissingMsg() {
@@ -88,6 +87,7 @@ class RegisterView extends LoginView {
 	*/
 	private function generateRegisterFormHTML($message) {
 		return '
+			<a href="?">Back to login</a>
 			<form action="?register" method="post" enctype="multipart/form-data"> 
 				<fieldset>
 					<legend>Register a new user - Write username and password</legend>

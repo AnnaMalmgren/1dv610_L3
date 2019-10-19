@@ -5,7 +5,7 @@ require_once("CardStorage.php");
 require_once("Player.php");
 
 class Dealer Extends Player { 
-    public $goal;
+    private $goal;
     private $deck;
        
     public function __construct($goal = 16) {
@@ -30,7 +30,7 @@ class Dealer Extends Player {
     public function isDealerWinner(Player $player) : bool {
         $dealerScore = $this->getScore();
         $playerScore = $player->getScore();
-        if ($dealerScore === 21) {
+        if ($dealerScore === Player::GAME_GOAL) {
             return true;
         }
         if ($dealerScore >= $playerScore && !$this->isBusted()) {
@@ -41,7 +41,10 @@ class Dealer Extends Player {
 
     public function isPlayerWinner(Player $player) : bool {
 		$playerScore = $player->getScore();
-		if ($playerScore == 21) {
+		if ($playerScore == Player::GAME_GOAL) {
+			return true;
+        }
+        if (count($player->getHand()) > 4 && !$player->isBusted()) {
 			return true;
 		}
 		return false;

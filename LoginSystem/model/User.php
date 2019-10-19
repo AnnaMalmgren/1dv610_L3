@@ -26,6 +26,7 @@ class User {
         if ($username !== htmlentities($username)) {
             throw new InvalidCharactersException();
         }
+        
 
         $this->username = $username;
     }

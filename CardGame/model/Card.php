@@ -5,6 +5,8 @@ class Card
 {
     const SUITS = ["Spades", "Hearts", "Clubs", "Diamonds"];
     const RANKS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+    const HIGH_ACE = 14;
+    const LOW_ACE = 1;
     private $suit;
     private $rank;
 
@@ -23,11 +25,11 @@ class Card
     }
 
     public function isAce() : bool {
-        return $this->rank == 14;
+        return $this->rank == self::HIGH_ACE;
     }
 
     public function setLowAceRank() {
-        $this->rank = 1;
+        $this->rank = self::LOW_ACE;
     }
 
 }

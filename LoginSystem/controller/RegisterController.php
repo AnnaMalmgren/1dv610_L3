@@ -33,9 +33,9 @@ class RegisterController {
     private function doRegisterUser() {
         if($this->view->userWantsToRegister()) {
             if ($this->isCredentialsValid()) {
-                $userCredentials = $this->view->getUser();
-                $registeredUser = new \Model\RegisteredUser($userCredentials);
-                $this->setSuccesfullRegisterView($userCredentials);
+                $user = $this->view->getUser();
+                $registeredUser = new \Model\RegisteredUser($user);
+                $this->setSuccesfullRegisterView($user);
             } else {
                 $this->setNotValidCredentialsMsg();
             }
@@ -46,7 +46,7 @@ class RegisterController {
        return !$this->view->isFieldMissing() && $this->view->doesPasswordsMatch();
     }
 
-    private function setSuccesfullRegisterView(\Model\UserCredentials $user) {
+    private function setSuccesfullRegisterView(\Model\User $user) {
         $this->loginView->setUserRegisteredMsg();
         $this->loginView->setUsername($user->getUsername());
         $this->userIsRegistered = TRUE;   

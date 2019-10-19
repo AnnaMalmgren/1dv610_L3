@@ -48,18 +48,10 @@ class LoginSystemApp {
     }
 
     private function renderRegisterView($loggedInView) {
-        $link = '<a href="?">Back to login</a>';
-        $this->view->setLink($link);
         $this->view->render($this->isUserLoggedIn(), $this->regView, $this->timeView, $loggedInView);
     }
 
     private function renderLoginView($loggedInView) {
-        $regLink = '<a href="?register">Register a new user</a>';
-        
-        if(!$this->loginView->isLoggedIn()) {
-            $this->view->setLink($regLink);
-        }
- 
         $this->view->render($this->isUserLoggedIn(), $this->loginView, $this->timeView, $loggedInView);
     }
 }

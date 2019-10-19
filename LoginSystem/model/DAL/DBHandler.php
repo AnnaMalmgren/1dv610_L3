@@ -2,14 +2,16 @@
 
 namespace Model;
 
- class DBconn {
-     private $conn;
+require_once("dbsettings.php");
+//require_once("dbproduction.php");
 
+ class DBHandler {
+     private $conn;
+     
      public function __construct()
      {
-        //require(__DIR__ . '/../../dbproduction.php');
-        require(__DIR__ . '/../../dbsettings.php');
-        $this->conn = mysqli_connect($dbHost, $dbUsername, $dbPassword, $dbName);
+      
+        $this->conn = setDBconn();
 
         if(!$this->conn) {
         die('Could not connect to db: ' . mysqli_error());
@@ -32,7 +34,6 @@ namespace Model;
 
         if (!mysqli_stmt_prepare($stmt, $sql)) {
             throw new Exception('Something went wrong: '. mysqli_error());
-            exit();
         }     
         $this->bindQueryParams($stmt, $types, $paramValues);
         mysqli_stmt_execute($stmt);
@@ -46,7 +47,6 @@ namespace Model;
 
         if (!mysqli_stmt_prepare($stmt, $sql)) {
             throw new Exception('Something went wrong: '. mysqli_error());
-            exit();
         } 
 
         $this->bindQueryParams($stmt, $types, $paramValues);
@@ -58,7 +58,6 @@ namespace Model;
 
         if (!mysqli_stmt_prepare($stmt, $sql)) {
             throw new Exception('Something went wrong: '. mysqli_error());
-            exit();
         }
 
         $this->bindQueryParams($stmt, $types, $paramValues);

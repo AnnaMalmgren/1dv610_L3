@@ -6,6 +6,7 @@ require_once("CardStorage.php");
 
 class Player {
     protected $cardStorage;
+    const GAME_GOAL = 21;
 
     public function __construct() {
         $this->cardStorage = new CardStorage(get_class($this));
@@ -17,6 +18,10 @@ class Player {
 
     public function getHand() {
         return $this->cardStorage->loadCards();
+    }
+
+    public function hasStartedGame() {
+        return $this->cardStorage->hasHand();
     }
  
     public function getScore() {
@@ -33,7 +38,7 @@ class Player {
             }
         
             foreach($aces as $ace) {
-                if (array_sum($scores) + $ace->getRank() > 21) {
+                if (array_sum($scores) + $ace->getRank() > self::GAME_GOAL) {
                     $ace->setLowAceRank();
                     array_push($scores, $ace->getRank());
                 } else {
@@ -47,7 +52,7 @@ class Player {
     }
 
     public function isBusted() : bool {
-        return $this->getScore() > 21;
+        return $this->getScore() > self::GAME_GOAL;
     }
 
     public function clearHand() {

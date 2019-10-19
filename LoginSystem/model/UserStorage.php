@@ -1,84 +1,74 @@
-<?php 
+<?php
 
 namespace Model;
 
-require_once('Exceptions/LoginUserException.php');
-require_once('Authentication.php');
+require_once('DAL/DbUserTable.php');
+require_once('DAL/DbAuthTable.php');
 
 class UserStorage {
-    private static $sessionName = 'SessionName';
-    private static $userAgent = 'UserAgent';
-    private $auth;
-    private $loggedInUser;
+    private $auhtDAL;
+    private $userDAL;
+    private static $colUsername = 'username';
+    private static $colAuthUsername = 'authUsername';
+    private static $colTempPwd= 'passwordHash';
+    private static $colPassword = 'password';
+    private static $colExpireDate = 'expireDate';
+    private $authenticatedUser;
+
 
     public function __construct() {
-        $this->auth = new Authentication();
+        $this->authDAL = new \Model\DbAuthTable();
+        $this->userDAL = new \Model\DbUserTable();
     }
 
-    public function loginUserByRequest(UserCredentials $credentials, bool $rememberMe) {
-        $userInfo = $this->auth->validateRequestCredentials($credentials);
-        $this->loggedInUser = $this->auth->getAuthenticatedUser();
-
-        if ($rememberMe) {
-            $this->saveCredentials();
+    public function validateRequestCredentials(UserCredentials $credentials) {
+        $user = $this->userDAL->getUser($credentials);
+        if (!$user) {
+            throw new WrongCredentialsException();
         }
 
-        $this->setUserSession();
-    }
-
-    public function loginUserByAuth(UserCredentials $credentials) {
-        $userInfo = $this->auth->validateAuthCredentials($credentials);
-        $this->loggedInUser = $this->auth->getAuthenticatedUser();
-        $this->setUserSession();
-    }
-
-    private function setUserSession() {
-        session_regenerate_id(); 
-        $_SESSION[self::$sessionName] = $this->loggedInUser->getUsername();
-        $_SESSION[self::$userAgent] =  $this->getClientsBrowserName();
-    }
-
-    private function getClientsBrowserName() {
-        return $_SERVER["HTTP_USER_AGENT"];
-    }
-
-    public function saveCredentials() {
-        $this->loggedInUser->setTempPassword();
-        $this->auth->saveAuthCredentials($this->loggedInUser);
-    }
-
-    public function getLoggedInUser() {
-        return $this->loggedInUser;
-    }
-
-    public function endSession() {
-        unset($_SESSION[self::$sessionName]);
-        unset($_SESSION[self::$userAgent]);
-    }
-
-    public function isUserLoggedIn() : bool {
-       return isset($_SESSION[self::$sessionName]);
-    }
-
-        //TODO FIX!!
-    public function controllSession() {
-        if (isset($_SESSION[self::$sessionId])){
-            if(!$this->checkSession()) {
-                return FALSE;
-            } else {
-                return TRUE;
-            }
+        if (!$this->verifyPassword($credentials)) {
+            throw new WrongCredentialsException();
         }
+
+        $this->authenticatedUser = new User($user[self::$colUsername], $user[self::$colPassword]);
     }
 
-    private function checkSession() {
-        if (!$this->getClientsBrowserName()) {
-            return FALSE;
+    private function verifyPassword (UserCredentials $credentials) : bool {
+        $userData = $this->userDAL->getUser($credentials);
+        return password_verify($credentials->getPassword(), $userData[self::$colPassword]);       
+    }
+
+    public function validateAuthCredentials(UserCredentials $credentials) {
+        $user = $this->authDAL->getAuthUser($credentials);
+        $expireDateCheck = $this->verifyExpireDate($credentials);
+        $pwdTokenCheck = $this->verifyTempPwd($credentials);
+
+        if (!$expireDateCheck || !$pwdTokenCheck ) {
+            throw new \Model\WrongAuthCredentialsException();
         }
-        if(!isset($_SESSION[self::$userAgent])) {
-            return FALSE;
-        }
-        return $this->getClientsBrowserName() === $_SESSION[self::$userAgent];
+
+        $this->authenticatedUser = new User($user[self::$colAuthUsername], $user[self::$colTempPwd]);
+    }
+
+    private function verifyExpireDate(UserCredentials $credentials) : bool {
+        $userData = $this->authDAL->getAuthUser($credentials); 
+        $currentDate = date("Y-m-d H:i:s", time());
+        $expireDate = $userData[self::$colExpireDate];
+        return $expireDate > $currentDate;
+    }  
+
+    private function verifyTempPwd(UserCredentials $credentials) : bool {
+        $userData = $this->authDAL->getAuthUser($credentials); 
+        return password_verify($credentials->getPassword(), $userData[self::$colTempPwd]);
+    }
+
+    public function getAuthenticatedUser() {
+        return $this->authenticatedUser;
+    }
+
+    public function saveAuthCredentials(User $user) {
+        $this->authDAL->saveAuthUser($user);
     }
 
 }

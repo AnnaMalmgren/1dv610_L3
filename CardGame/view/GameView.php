@@ -2,7 +2,7 @@
 
 namespace View;
 
-require_once(__DIR__ . '/../model/CardStorage.php');
+require_once(__DIR__ . '/../model/GameTableFacade.php');
 
 class GameView {
     const FACES = [1 => "Ace", 2 => "Two", 3 => "Three", 4 => "Four", 5 => "Five", 6 => "Six", 7 => "Seven", 
@@ -16,7 +16,6 @@ class GameView {
     private $playerScore = "";
     private $dealerScore = "";
     private $dealerCards = "";
-    private $isGameOn = FALSE;
 
     public function userWantsToStartGame() : bool {
         return isset($_POST[self::$startGame]);
@@ -34,79 +33,92 @@ class GameView {
         return isset($_POST[self::$quit]);
     }
 
-    public function setPlayerHand($hand) {
-        $this->playerCards .= '<h3>Your Hand</h3>';
-        foreach ($hand as $card) {
-            $this->playerCards .= '<p>' . self::FACES[$card->getRank()] . ' of ' . $card->getSuit() . '</p>';
-        }
+    public function updatePlayer($handOfCards, $score) {
+        $this->setPlayerHand($handOfCards);
+        $this->setPlayerScore($score);
     }
 
-    public function setDealerHand($hand) {
-        $this->dealerCards .= '<h3>Dealer Hand</h3>';
-        foreach ($hand as $card) {
-            $this->dealerCards .= '<p>' . self::FACES[$card->getRank()] . ' of ' . $card->getSuit() . '</p>';
-        }
+    private function setPlayerHand($handOfCards) {
+        $this->playerCards .= '<h3>Your Hand</h3>' . $this->getHTMLHand($handOfCards);
     }
 
-    public function setDealerScore($score) {
-        $this->dealerScore = '<p><strong>Dealers score is: ' . $score . '</strong></p>';
-    }
-
-    public function setPlayerScore($score) {
+    private function setPlayerScore($score) {
         $this->playerScore = '<p><strong>Your score is: ' . $score . '</strong></p>';
     }
 
-    public function setQuitMsg() {
-        $this->message = "Thank you for playing!";
+    private function getHTMLHand($cards) : string {
+        $handToReturn = "";
+        foreach ($cards as $card) {
+             $handToReturn .= '<p>' . self::FACES[$card->getRank()] . ' of ' . $card->getSuit() . '</p>';
+         }
+         return $handToReturn;
+     }
+
+     public function updateDealer($handOfCards, $score) {
+         $this->setDealerHand($handOfCards);
+         $this->setDealerScore($score);
+     }
+
+    private function setDealerHand($handOfCards) {
+        $this->dealerCards .= '<h3>Dealer Hand</h3>' . $this->getHTMLHand($handOfCards);
     }
 
-    public function setGameIsStarted() {
-        $this->isGameOn = True;
+    private function setDealerScore($score) {
+        $this->dealerScore = '<p><strong>Dealers score is: ' . $score . '</strong></p>';
     }
-
-  
-    private function setGameActionButtons($isGameOn) {
-        if ($isGameOn) {
-                return '
-                <input type="submit" name="' . self::$hit .'" value="Hit"></input>
-                <input type="submit" name="' . self::$stand .'" value="Stand"></input>
-                <input type="submit" name="' . self::$quit .'" value="Quit"></input>';
-        } else {
-            return'
-            <input type="submit" name="' . self::$startGame .'" value="New Game"></input>';
-        }
-    }
-
 
     public function setPlayerWon() {
-        $this->message = "Congratulations you win!";
+        $this->message = "Congratulations you won!";
 
     }
 
     public function setPlayerLost() {
         $this->message = "You Lost!";
     }
+   
+
+    public function setQuitMsg() {
+        $this->message = "Thank you for playing!";
+    }
+  
+    private function setGameActionButtons() {
+        if ($this->isGameOn()) {
+            return '
+                <input type="submit" name="' . self::$hit .'" value="Hit"></input>
+                <input type="submit" name="' . self::$stand .'" value="Stand"></input>
+                <input type="submit" name="' . self::$quit .'" value="Quit"></input>';
+        } else {
+            return'
+                <input type="submit" name="' . self::$startGame .'" value="New Game"></input>';
+        }
+    }
+
+    private function isGameOn(): bool {
+        $game = new \Model\GameTableFacade();
+        return $game->isGameOn();
+    }
+
 
     public function render($isLoggedIn) {
         if ($isLoggedIn) {
-        return '
-        <div>
-        <h1>Welcome to Card Game 21!</h1>
-        <p>To start a new game press new game!</p>
-        <form method="Post" action"?">
-        ' . $this->setGameActionButtons($this->isGameOn) . '
-        </form>
-        <div class="cards">
-        ' . $this->playerCards .'
-        ' . $this->playerScore. '
-        ' . $this->dealerCards . '
-        ' . $this->dealerScore. '
-        </div>
-        <div class="messages">
-        <p>' . $this->message . '</p>
-        </div>
-        </div>
-        ';
+            return '
+            <div>
+                <h1>Welcome to Card Game 21!</h1>
+                    <p>To start a new game press new game!</p>
+                    <form method="Post" action"?">
+                        ' . $this->setGameActionButtons() . '
+                    </form>
+                    <div class="cards">
+                        ' . $this->playerCards .'
+                        ' . $this->playerScore. '
+                        ' . $this->dealerCards . '
+                        ' . $this->dealerScore. '
+                    </div>
+                    <div class="messages">
+                        <p>' . $this->message . '</p>
+                    </div>
+            </div>
+            ';
         }
     
     }

@@ -2,16 +2,16 @@
 
 namespace Controller;
 
-require_once(__DIR__ . '/../model/UserStorage.php');
+require_once(__DIR__ . '/../model/Authentication.php');
 
 class LoginController {
 
     private $view;
-    private $userStorage;
+    private $auth;
 
     public function __construct(\View\LoginView $loginView) {
         $this->view = $loginView;
-        $this->userStorage = new \Model\UserStorage();
+        $this->auth = new \Model\Authentication();
     }
     
     public function loginUserByRequest() {
@@ -31,8 +31,8 @@ class LoginController {
     private function tryLoginUser() {
         if ($this->view->userWantsToLogin()) {
             $userCredentials = $this->view->getUserCredentials();
-            $this->userStorage->loginUserByRequest($userCredentials, $this->view->rememberMe());
-            $this->view->setLoggedInView($this->userStorage->getLoggedInUser());
+            $this->auth->loginUserByRequest($userCredentials, $this->view->rememberMe());
+            $this->view->setLoggedInView($this->auth->getLoggedInUser());
         }
     }
 
@@ -48,23 +48,23 @@ class LoginController {
     private function tryAuthAndLogin() {
         if ($this->userWantsLoginByAuth()) {
             $authCredentials = $this->view->getUserCredentials();
-            $this->userStorage->loginUserByAuth($authCredentials);
+            $this->auth->loginUserByAuth($authCredentials);
             $this->view->setWelcomeBackMsg();
         }
     }
 
     private function userWantsLoginByAuth() : bool  {
-        return $this->view->userWantsToAuthenticate() && !$this->userStorage->isUserLoggedIn();
+        return $this->view->userWantsToAuthenticate() && !$this->auth->isUserLoggedIn();
     }
 
     public function logoutUser() {
         if ($this->userWantsToLogout()) {
             $this->view->setLogoutUI();
-            $this->userStorage->endSession();
+            $this->auth->endSession();
         }
     }
 
     private function userWantsToLogout() : bool {
-        return $this->view->userWantsToLogout() && $this->userStorage->isUserLoggedIn();
+        return $this->view->userWantsToLogout() && $this->auth->isUserLoggedIn();
     }
 }

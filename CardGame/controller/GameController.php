@@ -5,10 +5,9 @@ require_once(__DIR__ . "/../model/GameTableFacade.php");
 require_once(__DIR__ . "/../model/Deck.php");
 
 class GameController {
-
+    
     private $game;
     private $view;
-
 
     public function __construct(\Model\GameTableFacade $game, \View\GameView $view){
         $this->game = $game;
@@ -18,48 +17,51 @@ class GameController {
     public function startGame() {
         if($this->view->userWantsToStartGame()) {
             $this->game->startGame();
-            $this->view->setGameIsStarted();
-            $this->view->setPlayerHand($this->game->getPlayerHand());
-            $this->view->setPlayerScore($this->game->getPlayerScore());
-            if ($this->game->isPlayerWinner()) {
-                $this->game->quitGame();
-                $this->view->setPlayerWon();
-            } else if ($this->game->isPlayerBusted()) {
-                $this->game->quitGame();
-                $this->view->setPlayerLost();
-            }
+            $this->view->updatePlayer($this->game->getPlayerHand(), $this->game->getPlayerScore());
+            $this->checkPlayerHand();
         }
     }
 
-    public function dealCard() {
+    private function checkPlayerHand() {
+        if ($this->game->isPlayerWinner()) {
+            $this->setPlayerWin();
+        } else if ($this->game->isPlayerBusted()) {
+            $this->setDealerWin();
+        }
+    }
+
+    private function setPlayerWin() {
+        $this->game->quitGame();
+        $this->view->setPlayerWon();
+    }
+
+    private function setDealerWin() {
+        $this->game->quitGame();
+        $this->view->setPlayerLost();
+    }
+
+    public function playerHit() {
         if($this->view->userWantsACard()) {
             $this->game->dealACard();
-            $this->view->setPlayerHand($this->game->getPlayerHand());
-            $this->view->setPlayerScore($this->game->getPlayerScore());
-            if ($this->game->isPlayerWinner()) {
-                $this->game->quitGame();
-                $this->view->setPlayerWon();
-            } else if ($this->game->isPlayerBusted()) {
-                $this->game->quitGame();
-                $this->view->setPlayerLost();
-            }
+            $this->view->updatePlayer($this->game->getPlayerHand(), $this->game->getPlayerScore());
+            $this->checkPlayerHand();
         }
     }
 
     public function playerStand() {
         if($this->view->userWantsToStand()) {
             $this->game->hitDealer();
-            $this->view->setPlayerHand($this->game->getPlayerHand());
-            $this->view->setPlayerScore($this->game->getPlayerScore());
-            $this->view->setDealerHand($this->game->getDealerHand());
-            $this->view->setDealerScore($this->game->getDealerScore());
-            if ($this->game->isDealerWinner()) {
-                $this->game->quitGame();
-                $this->view->setPlayerLost();
-            } else {
-                $this->game->quitGame();
-                $this->view->setPlayerWon();
-            }
+            $this->view->updatePlayer($this->game->getPlayerHand(), $this->game->getPlayerScore());
+            $this->view->updateDealer($this->game->getDealerHand(), $this->game->getDealerScore());
+            $this->getGameResult();
+        }
+    }
+
+    private function getGameResult() {
+        if ($this->game->isDealerWinner()) {
+            $this->setDealerWin();
+        } else {
+            $this->setPlayerWin();
         }
     }
 

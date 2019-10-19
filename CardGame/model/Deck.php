@@ -5,15 +5,15 @@ require_once("Card.php");
 
 class Deck {
 
-    public $cards;
+    private $cards;
      
     public function __construct() {
-        $this->cards = Array();
         $this->getDeckOfCards();
         $this->shuffle();
     }
 
     private function getDeckOfCards() {
+        $this->cards = Array();
         for ($i = 0; $i < count(Card::RANKS); $i++) {
             foreach (Card::SUITS as $suit) {
                 array_push($this->cards, new Card($suit, Card::RANKS[$i]));
@@ -22,14 +22,14 @@ class Deck {
     }
 
     private function shuffle() {
-        $currentCard = count($this->cards);
+        $currentCardIndex = count($this->cards);
 
-        while ($currentCard-- > 0)
+        while ($currentCardIndex-- > 0)
         {
-            $randomIndex = rand(0, $currentCard);
-            $tempCard = $this->cards[$currentCard];
-             $this->cards[$currentCard] = $this->cards[$randomIndex];
-             $this->cards[$randomIndex] = $tempCard;
+            $randomIndex = rand(0, $currentCardIndex);
+            $tempCard = $this->cards[$currentCardIndex];
+            $this->cards[$currentCardIndex] = $this->cards[$randomIndex];
+            $this->cards[$randomIndex] = $tempCard;
          }
     }
 

@@ -2,9 +2,9 @@
 
 namespace Model;
 
-require_once('DBconn.php');
+require_once('DBHandler.php');
 
- class DbUserTable extends DBconn {
+ class DbUserTable extends DBHandler {
 
     public function getUser(UserCredentials $credentials) {
         $sql = "SELECT * FROM users WHERE BINARY username=?";

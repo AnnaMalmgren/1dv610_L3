@@ -19,6 +19,10 @@ class GameTableFacade {
         $this->dealFirstRound();
     }
 
+    public function isGameOn() : bool {
+        return $this->player->hasStartedGame();
+    }
+
     private function dealFirstRound() {
         $this->dealACard();
         $this->dealACard();

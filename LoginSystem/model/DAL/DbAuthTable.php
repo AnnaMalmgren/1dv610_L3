@@ -2,9 +2,9 @@
 
 namespace Model;
 
-require_once('DBconn.php');
+require_once('DBHandler.php');
 
- class DbAuthTable extends DBconn {
+ class DbAuthTable extends DBHandler {
     private static $colPwd = 'passwordHash';
 
     public function saveAuthUser(User $user) {

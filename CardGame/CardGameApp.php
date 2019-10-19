@@ -10,14 +10,14 @@ class CardGameApp {
 
     public function __construct()
     {
-        $this->gameView = new \View\GameView();
         $this->gameTable = new \Model\GameTableFacade();
+        $this->gameView = new \View\GameView();
         $this->gameHandler = new \Controller\GameController($this->gameTable, $this->gameView);
     }
 
     public function startApp() {
         $this->gameHandler->startGame();
-        $this->gameHandler->dealCard();
+        $this->gameHandler->playerHit();
         $this->gameHandler->playerStand();
         $this->gameHandler->quitGame();
     }

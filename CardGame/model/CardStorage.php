@@ -3,27 +3,31 @@
 namespace Model;
 
 class CardStorage {
-    private $sessionKey;
+    private $nameOfHand;
 
     public function __construct(string $sessionKey) {
-        $this->sessionKey = $sessionKey;
+        $this->nameOfHand = $sessionKey;
+    }
+
+    public function hasHand() : bool {
+        return isset($_SESSION[$this->nameOfHand]);
     }
     
 	public function loadCards() {
-		if (isset($_SESSION[$this->sessionKey])) {
-			return $_SESSION[$this->sessionKey];
+		if ($this->hasHand()) {
+			return $_SESSION[$this->nameOfHand];
 		}
     }
     
 	public function saveCard(Card $toBeSaved) {
-        if (isset($_SESSION[$this->sessionKey])) {
-            array_push($_SESSION[$this->sessionKey], $toBeSaved);
+        if ($this->hasHand()) {
+            array_push($_SESSION[$this->nameOfHand], $toBeSaved);
         } else {
-            $_SESSION[$this->sessionKey] = Array($toBeSaved);
+            $_SESSION[$this->nameOfHand] = Array($toBeSaved);
         } 
     }
     
     public function reset() {
-        unset($_SESSION[$this->sessionKey]);
+        unset($_SESSION[$this->nameOfHand]);
     }
 }

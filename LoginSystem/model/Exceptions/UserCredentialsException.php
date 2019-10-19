@@ -2,6 +2,6 @@
 namespace Model;
 class UserCredentialException extends \Exception{}
 
-class UsernameMissingException extends LoginUserException {}
+class UsernameMissingException extends UserCredentialException  {}
 
-class PasswordMissingException extends LoginUserException {}
+class PasswordMissingException extends UserCredentialException  {}

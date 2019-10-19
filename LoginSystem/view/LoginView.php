@@ -1,7 +1,6 @@
 <?php
 namespace View;
 
-require_once(__DIR__ . '/../model/UserStorage.php');
 require_once(__DIR__ . '/../model/UserCredentials.php');
 
 class LoginView {
@@ -15,11 +14,9 @@ class LoginView {
 	private static $messageId = 'LoginView::Message';
 	private $message = "";
 	private $username = "";
-	private $userStorage;
 	private $cookieExpiresIn;
 
 	public function __construct() {
-		$this->userStorage = new \Model\UserStorage();
 		$this->cookieExpiresIn = time() + (7 * 24 * 60 * 60);
 	}
 
@@ -92,7 +89,7 @@ class LoginView {
 	}
 
 	public function isLoggedIn() {
-		return $this->userStorage->isUserLoggedIn();
+		return \Model\Authentication::isUserLoggedIn();
 	}
 
 	public function setUsername($username) {
@@ -156,6 +153,7 @@ class LoginView {
 
 	private function generateLoginFormHTML($message) {
 		return '
+			<a href="?register">Register a new user</a>
 			<form method="post" action="?" > 
 				<fieldset>
 					<legend>Login - enter Username and password</legend>
