@@ -84,9 +84,9 @@ class GameView {
     private function setGameActionButtons() {
         if ($this->isGameOn()) {
             return '
-                <input type="submit" name="' . self::$hit .'" value="Hit" />
-                <input type="submit" name="' . self::$stand .'" value="Stand" />
-                <input type="submit" name="' . self::$quit .'" value="Quit" />';
+                <input type="submit" name="' . self::$hit . '" value="Hit" />
+                <input type="submit" name="' . self::$stand . '" value="Stand" />
+                <input type="submit" name="' . self::$quit . '" value="Quit" />';
         } else {
             return'
                 <input type="submit" name="' . self::$startGame .'" value="New Game" />';
@@ -99,22 +99,22 @@ class GameView {
     }
 
 
-    public function render($isLoggedIn) {
+    public function response($isLoggedIn) {
         if ($isLoggedIn) {
             return '
             <div>
-                <h1>Welcome to Card Game 21!</h1>
+                <h2>Welcome to Card Game 21!</h2>
                     <p>To start a new game press new game!</p>
                     <form method="post" action"?">
                         ' . $this->setGameActionButtons() . '
                     </form>
-                    <div class="cards">
+                    <div>
                         ' . $this->playerCards .'
                         ' . $this->playerScore. '
                         ' . $this->dealerCards . '
                         ' . $this->dealerScore. '
                     </div>
-                    <div class="messages">
+                    <div>
                         <p>' . $this->message . '</p>
                     </div>
             </div>
