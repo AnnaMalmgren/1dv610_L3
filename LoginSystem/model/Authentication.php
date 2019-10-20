@@ -63,14 +63,15 @@ class Authentication {
        return isset($_SESSION[self::$sessionName]);
     }
 
-    public function validateUserBrowser() {
+    public function validateUserBrowser() : bool {
         if (isset($_SESSION[self::$sessionId])){
             return $this->checkSession();
         }
+        return TRUE;
     }
     
     //TODO FIX PROTECTION SESSION HIJACKING.
-    private function checkSession() : bool {
+    private function checkSessionBrowser() : bool {
         if (!$this->getClientsBrowserName()) {
             return FALSE;
         }
