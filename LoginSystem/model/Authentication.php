@@ -64,7 +64,7 @@ class Authentication {
     }
 
     public function validateUserBrowser() : bool {
-        if (isset($_SESSION[self::$sessionId])){
+        if (isset($_SESSION[self::$userAgent])){
             return $this->checkSession();
         }
         return TRUE;
