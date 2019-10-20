@@ -31,20 +31,19 @@ class Dealer Extends Player {
         $playerScore = $player->getScore();
         if ($dealerScore === Player::GAME_GOAL) {
             return true;
-        }
-        if ($dealerScore >= $playerScore && !$this->isBusted()) {
+        } else if ($dealerScore >= $playerScore && !$this->isBusted()) {
             return true;
         }
+
 		return false;
     }
     
     // used to check if player has won to know if dealer should take cards or not.
     public function isPlayerWinner(Player $player) : bool {
 		if ($player->getScore() == Player::GAME_GOAL) {
-			return true;
-        }
-        if ($this->playerWonOnNrOfCards($player)) {
-			return true;
+            return true;
+        } else if ($this->playerWonOnNrOfCards($player)) {
+            return true;
 		}
 		return false;
     }
