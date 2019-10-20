@@ -15,9 +15,13 @@ class App {
     }
 
     public function runApp() {
-        session_start();
-        $this->changeState();
-        $this->renderViews();
+        try {
+            session_start();
+            $this->changeState();
+            $this->renderViews();
+        } catch (\Exception $e) {
+            $this->loginSystem->setException();
+        }
     }
 
     private function changeState() {

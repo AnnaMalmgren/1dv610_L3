@@ -1,3 +1,7 @@
+dbsettings.php should contain function setDBconn
+Enter correct value for the varibales when creating the file.
+
+<?php
 
 function setDBconn() 
 {

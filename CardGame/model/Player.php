@@ -39,7 +39,7 @@ class Player {
       
     }
 
-    private function getAces($cards) {
+    private function getAces(array $cards) {
         $aces = Array();
         foreach($cards as $card) {
             if ($card->isAce()) {
@@ -49,7 +49,7 @@ class Player {
         return $aces;
     }
 
-    private function getRanksWithoutAces($cards) {
+    private function getRanksWithoutAces(array $cards) {
         $cardRanks = Array();
 
         foreach($cards as $card) {
@@ -60,7 +60,7 @@ class Player {
         return $cardRanks;
     }
 
-    private function getScores($ranks, $aces) {
+    private function getScores(array $ranks, array $aces) {
         foreach($aces as $ace) {
             //If total score + 14 is over 21 Ace rank is changed to 1. 
             if (array_sum($ranks) + $ace->getRank() > self::GAME_GOAL) {

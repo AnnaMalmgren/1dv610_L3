@@ -27,7 +27,6 @@ class User {
             throw new InvalidCharactersException();
         }
         
-
         $this->username = $username;
     }
 

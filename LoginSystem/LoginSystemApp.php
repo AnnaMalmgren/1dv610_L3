@@ -55,4 +55,9 @@ class LoginSystemApp {
     private function renderLoginView($loggedInView) {
         $this->view->render($this->isUserLoggedIn(), $this->loginView, $this->timeView, $loggedInView);
     }
+
+    public function setException() {
+        $this->view->setExceptionMsg();
+    }
+
 }

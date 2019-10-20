@@ -20,7 +20,8 @@ class UserStorage {
         $this->authDAL = new \Model\DbAuthTable();
         $this->userDAL = new \Model\DbUserTable();
     }
-
+    
+    // When user clicks on login
     public function validateRequestCredentials(UserCredentials $credentials) {
         $user = $this->userDAL->getUser($credentials);
         if (!$user) {
@@ -38,7 +39,9 @@ class UserStorage {
         $userData = $this->userDAL->getUser($credentials);
         return password_verify($credentials->getPassword(), $userData[self::$colPassword]);       
     }
-
+    
+    
+    // When user get logged in by cookies.
     public function validateAuthCredentials(UserCredentials $credentials) {
         $user = $this->authDAL->getAuthUser($credentials);
         $expireDateCheck = $this->verifyExpireDate($credentials);

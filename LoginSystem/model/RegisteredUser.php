@@ -13,15 +13,15 @@ class RegisteredUser {
     public function __construct(UserCredentials $user) {
             $this->storage = new DbUserTable();
             $this->setRegisteredUser($user);
-            $this->storage->saveUser($this->registeredUser);
     }
 
-     public function setRegisteredUser($credentials) {
+     public function setRegisteredUser(UserCredentials $credentials) {
         $this->registeredUser = new User($credentials->getUsername(), $credentials->getPassword());
-
         if ($this->storage->getUser($credentials)) {
             throw new UsernameExistsException();
         }
+
+        $this->storage->saveUser($this->registeredUser);
     }
 
     public function getRegisteredUsersName() : string {

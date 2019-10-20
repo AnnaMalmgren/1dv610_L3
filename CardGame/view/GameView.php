@@ -52,15 +52,15 @@ class GameView {
         $this->setPlayerScore($this->game->getPlayerScore());
     }
 
-    private function setPlayerHand($handOfCards) {
+    private function setPlayerHand(array $handOfCards) {
         $this->playerCards .= '<h3 class="mt-2 mb-2">Your Hand</h3>' . $this->getHTMLHand($handOfCards);
     }
 
-    private function setPlayerScore($score) {
+    private function setPlayerScore(int $score) {
         $this->playerScore = '<p><strong>Your score is: ' . $score . '</strong></p>';
     }
 
-    private function getHTMLHand($cards) : string {
+    private function getHTMLHand(array $cards) : string {
         $handToReturn = "";
         foreach ($cards as $card) {
              $handToReturn .= '<p class="text-monospace">
@@ -75,11 +75,11 @@ class GameView {
          $this->setDealerScore($this->game->getDealerScore());
      }
 
-    private function setDealerHand($handOfCards) {
+    private function setDealerHand(array $handOfCards) {
         $this->dealerCards .= '<h3 class="mt-2 mb-2">Dealer Hand</h3>' . $this->getHTMLHand($handOfCards);
     }
 
-    private function setDealerScore($score) {
+    private function setDealerScore(int $score) {
         $this->dealerScore = '<p><strong>Dealers score is: ' . $score . '</strong></p>';
     }
 
@@ -114,7 +114,7 @@ class GameView {
     }
 
 
-    public function response($isLoggedIn) {
+    public function response(bool $isLoggedIn) {
         if ($isLoggedIn) {
             return '
             <div class="container w-50">

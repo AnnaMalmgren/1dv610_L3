@@ -38,7 +38,7 @@ class Authentication {
         $_SESSION[self::$userAgent] = md5($this->getClientsBrowserName());
     }
 
-    private function getClientsBrowserName() {
+    private function getClientsBrowserName() : string {
         return $_SERVER[self::$clientUserAgent];
     }
 

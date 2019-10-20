@@ -6,7 +6,7 @@ class LayoutView {
   private static $title = "CardGame";
   private $charset = "utf-8";
   private $bootstrapCSS = '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">';
-
+  private $exceptionMsg = "";
 
 	public function userClicksRegisterLink() : bool {
 		return isset($_GET[self::$registerLink]);
@@ -14,7 +14,12 @@ class LayoutView {
   
   public function setCharset(string $newCharSet) {
 		$this->charset = $newCharSet;
-	}
+  }
+
+  public function setExceptionMsg() {
+    $this->exceptionMsg = "Something went wrong";
+  }
+  
   
   public function render($isLoggedIn, LoginView $v, DateTimeView $dtv, GameView $gameView) {
     echo '<!DOCTYPE html>
@@ -33,6 +38,8 @@ class LayoutView {
           </div>
           <div class="container">
               ' . $gameView->response($isLoggedIn) . '
+
+              ' . $this->exceptionMsg . '
               
               ' . $dtv->show() . '
           </div>

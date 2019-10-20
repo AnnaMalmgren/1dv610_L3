@@ -7,7 +7,7 @@ require_once("Player.php");
 class Dealer Extends Player { 
     private $goal;
     private $deck;
-    // if player gets 5 cards and score under 21 player wins.
+    //used for checking if player got 5 cards.
     const CARDS_WIN = 5;
        
     public function __construct(int $goal = 16) {
@@ -48,7 +48,7 @@ class Dealer Extends Player {
 		}
 		return false;
     }
-
+    
     private function playerWonOnNrOfCards(Player $player) : bool {
         return count($player->getHand()) >= self::CARDS_WIN && !$player->isBusted();
     }
