@@ -8,6 +8,7 @@ require_once('UserStorage.php');
 class Authentication {
     private static $sessionName = 'SessionName';
     private static $userAgent = 'UserAgent';
+    private static $clientUserAgent = "HTTP_USER_AGENT";
     private $storage;
     private $loggedInUser;
 
@@ -34,11 +35,7 @@ class Authentication {
     private function setUserSession() {
         session_regenerate_id(); 
         $_SESSION[self::$sessionName] = $this->loggedInUser->getUsername();
-        $_SESSION[self::$userAgent] = md5($this->getClientsBrowserName());
-    }
-
-    private function getClientsBrowserName() {
-        return $_SERVER["HTTP_USER_AGENT"];
+        $_SESSION[self::$userAgent] = md5($_SERVER[self::$clientUserAgent]);
     }
 
     public function loginUserByAuth(UserCredentials $credentials) {
@@ -57,12 +54,12 @@ class Authentication {
     }
 
     public static function isUserLoggedIn() : bool {
-       return isset($_SESSION[self::$sessionName]) && $this->validateUserBrowser() ;
+       return isset($_SESSION[self::$sessionName]) && self::validateUserBrowser() ;
     }
     
     //TODO FIX PROTECTION SESSION HIJACKING.
-    public function validateUserBrowser() : bool {
-        return $_SESSION[self::$userAgent] === md5($this->getClientsBrowserName());
+    public static function validateUserBrowser() : bool {
+        return $_SESSION[self::$userAgent] === md5($_SERVER[self::$clientUserAgent]);
     }
 
 }
