@@ -72,7 +72,7 @@ class LoginView {
 	}
 
 	public function isLoggedIn() {
-		$auth = new Authentication();
+		$auth = new \Model\Authentication();
 		return $auth->isUserLoggedIn();
 	}
 
