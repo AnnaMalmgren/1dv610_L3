@@ -23,9 +23,9 @@ class CardStorage {
     }
 
     public function loadCards() {
-		if ($this->hasHand()) {
-			return $_SESSION[$this->nameOfHand];
-		}
+        if ($this->hasHand()) {
+            return $_SESSION[$this->nameOfHand];
+        }
     }
     
     public function reset() {

@@ -40,12 +40,12 @@ class Dealer Extends Player {
     
     // used to check if player has won to know if dealer should take cards or not.
     public function isPlayerWinner(Player $player) : bool {
-		if ($player->getScore() == Player::GAME_GOAL) {
+        if ($player->getScore() == Player::GAME_GOAL) {
             return true;
         } else if ($this->playerWonOnNrOfCards($player)) {
             return true;
-		}
-		return false;
+        }
+        return false;
     }
     
     private function playerWonOnNrOfCards(Player $player) : bool {
