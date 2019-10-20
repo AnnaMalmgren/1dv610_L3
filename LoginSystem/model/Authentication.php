@@ -60,7 +60,7 @@ class Authentication {
        return isset($_SESSION[self::$sessionName]);
     }
 
-    public function controllSession() {
+    public function validateUserBrowser() {
         if (isset($_SESSION[self::$sessionId])){
             if(!$this->checkSession()) {
                 return FALSE;

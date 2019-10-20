@@ -45,11 +45,15 @@ class LoginController {
     }
 
     private function tryAuthAndLogin() {
-        if ($this->userWantsLoginByAuth()) {
+        if ($this->userWantsLoginByAuth() && $this->checkUserLocation()) {
             $authCredentials = $this->view->getUserCredentials();
             $this->auth->loginUserByAuth($authCredentials);
             $this->view->setWelcomeBackMsg();
         }
+    }
+
+    private function checkUserLocation() : bool {
+       return $this->auth->validateUserBrowser();
     }
 
     private function userWantsLoginByAuth() : bool  {
