@@ -82,5 +82,4 @@ class Player {
     public function clearHand() {
         $this->cardStorage->reset();
     }
-     
 }

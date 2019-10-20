@@ -15,7 +15,6 @@ class GameTableFacade {
         $this->player = new Player();
     }
 
-
     public function isGameOn() : bool {
         return $this->player->hasStartedGame();
     }
@@ -65,6 +64,4 @@ class GameTableFacade {
     public function getDealerScore() : int {
         return $this->dealer->getScore();
     }
-
-    
 }
