@@ -44,6 +44,9 @@ class Authentication {
     public function loginUserByAuth(UserCredentials $credentials) {
         $userInfo = $this->storage->validateAuthCredentials($credentials);
         $this->loggedInUser = $this->storage->getAuthenticatedUser();
+        if (!$this->validateUserBrowser()) {
+            throw new HijackingException();
+        }
         $this->setUserSession();
     }
 
@@ -62,21 +65,13 @@ class Authentication {
 
     public function validateUserBrowser() {
         if (isset($_SESSION[self::$sessionId])){
-            if(!$this->checkSession()) {
-                return FALSE;
-            } else {
-                return TRUE;
-            }
+            return $this->checkSession();
         }
     }
     
-    
     //TODO FIX PROTECTION SESSION HIJACKING.
-    private function checkSession() {
+    private function checkSession() : bool {
         if (!$this->getClientsBrowserName()) {
-            return FALSE;
-        }
-        if(!isset($_SESSION[self::$userAgent])) {
             return FALSE;
         }
         return $this->getClientsBrowserName() === $_SESSION[self::$userAgent];

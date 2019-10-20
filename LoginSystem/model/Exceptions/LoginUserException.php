@@ -6,4 +6,6 @@ class WrongCredentialsException extends LoginUserException {}
 
 class WrongAuthCredentialsException extends LoginUserException {}
 
+class HijackingException extends LoginUserException {}
+
 

@@ -41,19 +41,15 @@ class LoginController {
 
         } catch (\Model\WrongAuthCredentialsException $e) {
             $this->view->setWrongAuthCredentialsMsg();
-        }
+        } catch (\Model\HijackingException $e){}
     }
 
     private function tryAuthAndLogin() {
-        if ($this->userWantsLoginByAuth() && $this->checkUserLocation()) {
+        if ($this->userWantsLoginByAuth()) {
             $authCredentials = $this->view->getUserCredentials();
             $this->auth->loginUserByAuth($authCredentials);
             $this->view->setWelcomeBackMsg();
         }
-    }
-
-    private function checkUserLocation() : bool {
-       return $this->auth->validateUserBrowser();
     }
 
     private function userWantsLoginByAuth() : bool  {
