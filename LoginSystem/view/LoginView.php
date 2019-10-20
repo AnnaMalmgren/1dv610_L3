@@ -3,6 +3,7 @@
 namespace View;
 
 require_once(__DIR__ . '/../model/UserCredentials.php');
+require_once(__DIR__ . '/../model/Authentication.php');
 require_once('Exceptions/UserCredentialsException.php');
 
 class LoginView {
@@ -71,7 +72,8 @@ class LoginView {
 	}
 
 	public function isLoggedIn() {
-		return \Model\Authentication::isUserLoggedIn();
+		$auth = new Authentication();
+		return $auth->isUserLoggedIn();
 	}
 
 	private function setAlertDangerStyle() {
