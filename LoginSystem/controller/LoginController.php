@@ -41,7 +41,7 @@ class LoginController {
 
         } catch (\Model\WrongAuthCredentialsException $e) {
             $this->view->setWrongAuthCredentialsMsg();
-        } catch (\Model\HijackingException $e){}
+        }
     }
 
     private function tryAuthAndLogin() {

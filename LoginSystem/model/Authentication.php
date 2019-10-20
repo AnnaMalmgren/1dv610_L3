@@ -34,6 +34,7 @@ class Authentication {
     private function setUserSession() {
         session_regenerate_id(); 
         $_SESSION[self::$sessionName] = $this->loggedInUser->getUsername();
+        $_SESSION[self::$userAgent] = md5($this->getClientsBrowserName());
     }
 
     private function getClientsBrowserName() {
@@ -43,7 +44,6 @@ class Authentication {
     public function loginUserByAuth(UserCredentials $credentials) {
         $userInfo = $this->storage->validateAuthCredentials($credentials);
         $this->loggedInUser = $this->storage->getAuthenticatedUser();
-        $this->checkSessionBrowser();
         $this->setUserSession();
     }
 
@@ -57,18 +57,12 @@ class Authentication {
     }
 
     public static function isUserLoggedIn() : bool {
-       return isset($_SESSION[self::$sessionName]);
+       return isset($_SESSION[self::$sessionName]) && $this->validateUserBrowser() ;
     }
     
     //TODO FIX PROTECTION SESSION HIJACKING.
-    private function checkSessionBrowser() {
-        if (isset($_SESSION[self::$userAgent])) {
-            if ($_SESSION[self::$userAgent] != md5($this->getClientsBrowserName())) {
-                throw new HijackingException();
-            }
-          } else {
-            $_SESSION[self::$userAgent] = md5($this->getClientsBrowserName());
-          }
+    public function validateUserBrowser() : bool {
+        return $_SESSION[self::$userAgent] === md5($this->getClientsBrowserName());
     }
 
 }
