@@ -6,7 +6,7 @@ require_once(__DIR__ . '/../model/RegisteredUser.php');
 class RegisterController {
     private $userIsRegistered = FALSE;
     private $view;
-    private $loginView;
+    private $registeredUser;
 
     public function __construct(\View\RegisterView $registerView, \View\LoginView $loginView) {
         $this->view = $registerView;
@@ -35,19 +35,16 @@ class RegisterController {
     private function doRegisterUser() {
         if($this->view->userWantsToRegister()) {
             $userCredentials = $this->view->getRegUserCredentials();
-            $registeredUser = new \Model\RegisteredUser($userCredentials);
-            $this->setSuccesfullRegisterView($userCredentials->getUsername());
+            $this->registeredUser = new \Model\RegisteredUser($userCredentials);
+            $this->userIsRegistered = TRUE;  
         }
     }
 
-
-    private function setSuccesfullRegisterView($username) {
-        $this->loginView->setUserRegisteredMsg();
-        $this->loginView->setUsername($username);
-        $this->userIsRegistered = TRUE;   
+    public function getRegUsername() : string {
+        return $this->registeredUser->getRegisteredUsersName();
     }
     
-    public function getUserIsRegistered() {
+    public function getUserIsRegistered() : bool {
         return $this->userIsRegistered;
     }
 }

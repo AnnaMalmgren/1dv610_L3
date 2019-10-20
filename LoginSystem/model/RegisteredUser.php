@@ -17,10 +17,14 @@ class RegisteredUser {
     }
 
      public function setRegisteredUser($credentials) {
+        $this->registeredUser = new User($credentials->getUsername(), $credentials->getPassword());
+
         if ($this->storage->getUser($credentials)) {
             throw new UsernameExistsException();
         }
+    }
 
-        $this->registeredUser = new User($credentials->getUsername(), $credentials->getPassword());
+    public function getRegisteredUsersName() {
+        return $this->registeredUser->getUsername();
     }
 }
