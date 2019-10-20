@@ -15,15 +15,12 @@ class GameTableFacade {
         $this->player = new Player();
     }
 
-    public function startGame() {
-        $this->dealFirstRound();
-    }
 
     public function isGameOn() : bool {
         return $this->player->hasStartedGame();
     }
 
-    private function dealFirstRound() {
+    public function startGame() {
         $this->dealACard();
         $this->dealACard();
     }
@@ -45,15 +42,15 @@ class GameTableFacade {
         $this->dealer->clearHand();
     }
 
-    public function isPlayerBusted() {
+    public function isPlayerBusted() : bool {
         return $this->player->isBusted();
     }
 
-    public function isPlayerWinner() {
+    public function isPlayerWinner() : bool {
         return $this->dealer->isPlayerWinner($this->player);
     }
 
-    public function isDealerWinner() {
+    public function isDealerWinner() : bool {
         return $this->dealer->isDealerWinner($this->player);
     } 
 

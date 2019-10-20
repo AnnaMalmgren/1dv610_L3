@@ -31,10 +31,7 @@ class RegisterView extends LoginView {
 	}
 
 	private function getFilteredName() : string {
-		if ($this->userWantsToRegister()) {
-			return strip_tags($this->getRequestName());
-		}
-		return "";
+		return $this->userWantsToRegister() ? strip_tags($this->getRequestName()) : "";
 	}
 
 	public function getRegUserCredentials() : \Model\UserCredentials {
@@ -47,12 +44,12 @@ class RegisterView extends LoginView {
 		return new \Model\UserCredentials($this->getRequestName(), $this->getRequestPwd());
 	}
 
-	public function isFieldMissing() : bool {
-		return empty($this->getRequestName()) && empty($this->getRequestPwd());
-	}
-
 	public function passwordsMatch() : bool {
 		return $this->getRequestPwd() == $this->getRequestPwdRepeat();
+	}
+
+	public function isFieldMissing() : bool {
+		return empty($this->getRequestName()) && empty($this->getRequestPwd());
 	}
 
 	private function setAlertDangerStyle() {
@@ -93,16 +90,10 @@ class RegisterView extends LoginView {
 		$this->message = 'Passwords do not match.';
 	}
 
-
 	public function response() {
 		return $this->generateRegisterFormHTML($this->message);
 	}
 
-    /**
-	* Generate HTML code on the output buffer for the register form.
-	* @param $message, String output message
-	* @return  void
-	*/
 	private function generateRegisterFormHTML($message) {
 		return '
 			<div class="container m-3">
@@ -122,14 +113,13 @@ class RegisterView extends LoginView {
 					</div>	
 					<div class="form-group">
                     	<label for="' . self::$passwordRepeat . '">Repeat password :</label>
-						<input type="password" id="' . self::$passwordRepeat . '" name="' . self::$passwordRepeat . '" 
-						class="form-control" />
+						<input type="password" id="' . self::$passwordRepeat . '" 
+						name="' . self::$passwordRepeat . '" class="form-control" />
 					</div>
 						<input id ="submit" type="submit" name=' . self::$register . ' value="Register" 
 						class="btn btn-primary mt-2 mb-2"/>
 				</form>
-			</div>
-		';
+			</div>';
 	}
 
 }

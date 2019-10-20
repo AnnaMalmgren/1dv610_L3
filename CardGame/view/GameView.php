@@ -16,6 +16,11 @@ class GameView {
     private $playerScore = "";
     private $dealerScore = "";
     private $dealerCards = "";
+    private $game;
+
+    public function __construct() {
+        $this->game = new \Model\GameTableFacade();
+    }
 
     public function userWantsToStartGame() : bool {
         return isset($_POST[self::$startGame]);
@@ -33,9 +38,18 @@ class GameView {
         return isset($_POST[self::$quit]);
     }
 
-    public function updatePlayer($handOfCards, $score) {
-        $this->setPlayerHand($handOfCards);
-        $this->setPlayerScore($score);
+    public function setUpdatedHands() {
+        if ($this->game->getPlayerHand()) {
+            $this->updatePlayer();
+        }
+        if ($this->game->getDealerHand()) {
+            $this->updateDealer();
+        }
+    }
+
+    public function updatePlayer() {
+        $this->setPlayerHand($this->game->getPlayerHand());
+        $this->setPlayerScore($this->game->getPlayerScore());
     }
 
     private function setPlayerHand($handOfCards) {
@@ -56,9 +70,9 @@ class GameView {
          return $handToReturn;
      }
 
-     public function updateDealer($handOfCards, $score) {
-         $this->setDealerHand($handOfCards);
-         $this->setDealerScore($score);
+     public function updateDealer() {
+         $this->setDealerHand( $this->game->getDealerHand());
+         $this->setDealerScore($this->game->getDealerScore());
      }
 
     private function setDealerHand($handOfCards) {
@@ -96,8 +110,7 @@ class GameView {
     }
 
     private function isGameOn(): bool {
-        $game = new \Model\GameTableFacade();
-        return $game->isGameOn();
+        return $this->game->isGameOn();
     }
 
 
@@ -125,5 +138,4 @@ class GameView {
         }
     
     }
-
 }

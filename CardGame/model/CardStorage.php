@@ -6,6 +6,7 @@ class CardStorage {
     private $nameOfHand;
 
     public function __construct(string $sessionKey) {
+        // used to create different session variables for player and dealer.
         $this->nameOfHand = $sessionKey;
     }
 

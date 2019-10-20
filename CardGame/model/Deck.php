@@ -8,11 +8,11 @@ class Deck {
     private $cards;
      
     public function __construct() {
-        $this->getDeckOfCards();
+        $this->setDeckOfCards();
         $this->shuffle();
     }
 
-    private function getDeckOfCards() {
+    private function setDeckOfCards() {
         $this->cards = Array();
         for ($i = 0; $i < count(Card::RANKS); $i++) {
             foreach (Card::SUITS as $suit) {

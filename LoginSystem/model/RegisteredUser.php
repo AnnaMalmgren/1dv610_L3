@@ -7,8 +7,8 @@ require_once('DAL/DbUserTable.php');
 require_once('User.php');
 
 class RegisteredUser {
-    private $registeredUser;
     private $storage;
+    private $registeredUser;
 
     public function __construct(UserCredentials $user) {
             $this->storage = new DbUserTable();
@@ -17,10 +17,10 @@ class RegisteredUser {
     }
 
      public function setRegisteredUser($credentials) {
-        $user = new User($credentials->getUsername(), $credentials->getPassword());
         if ($this->storage->getUser($credentials)) {
             throw new UsernameExistsException();
         }
-        $this->registeredUser = $user;
+
+        $this->registeredUser = new User($credentials->getUsername(), $credentials->getPassword());
     }
 }

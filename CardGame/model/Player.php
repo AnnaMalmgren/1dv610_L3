@@ -7,6 +7,7 @@ require_once("CardStorage.php");
 class Player {
     protected $cardStorage;
     const GAME_GOAL = 21;
+    const NO_CARDS = 0;
 
     public function __construct() {
         $this->cardStorage = new CardStorage(get_class($this));
@@ -20,36 +21,57 @@ class Player {
         return $this->cardStorage->loadCards();
     }
 
-    public function hasStartedGame() {
+    public function hasStartedGame() : bool {
         return $this->cardStorage->hasHand();
     }
  
-    public function getScore() {
-        $scores = Array();
-        $aces = Array();
+    public function getScore() : int {
         $cards = $this->getHand();
         if ($cards) {
-            foreach($cards as $card) {
-                if ($card->isAce()) {
-                    array_push($aces, $card);
-                } else {
-                    array_push($scores, $card->getRank());
-                }
-            }
-        
-            foreach($aces as $ace) {
-                if (array_sum($scores) + $ace->getRank() > self::GAME_GOAL) {
-                    $ace->setLowAceRank();
-                    array_push($scores, $ace->getRank());
-                } else {
-                    array_push($scores, $ace->getRank());
-                }
-            }
+            $aces = $this->getAces($cards);
+            $cardRanks = $this->getRanksWithoutAces($cards);
+            $scores = $this->getScores($cardRanks, $aces);
             return array_sum($scores);
         } else {
-            return 0;
+            return self::NO_CARDS;
         }
+      
     }
+
+    private function getAces($cards) {
+        $aces = Array();
+        foreach($cards as $card) {
+            if ($card->isAce()) {
+                array_push($aces, $card);
+            }
+        }
+        return $aces;
+    }
+
+    private function getRanksWithoutAces($cards) {
+        $cardRanks = Array();
+
+        foreach($cards as $card) {
+            if (!$card->isAce()) {
+                array_push($cardRanks, $card->getRank());
+            }
+        }
+        return $cardRanks;
+    }
+
+    private function getScores($ranks, $aces) {
+        foreach($aces as $ace) {
+            if (array_sum($ranks) + $ace->getRank() > self::GAME_GOAL) {
+                $ace->setLowAceRank();
+                array_push($ranks, $ace->getRank());
+            } else {
+                array_push($ranks, $ace->getRank());
+            }
+        }
+
+        return $ranks;
+    }
+
 
     public function isBusted() : bool {
         return $this->getScore() > self::GAME_GOAL;

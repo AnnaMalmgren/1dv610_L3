@@ -7,8 +7,9 @@ require_once("Player.php");
 class Dealer Extends Player { 
     private $goal;
     private $deck;
+    const CARDS_WIN = 4;
        
-    public function __construct($goal = 16) {
+    public function __construct(int $goal = 16) {
         parent::__construct();
         $this->goal = $goal;
         $this->deck = new Deck();
@@ -23,7 +24,6 @@ class Dealer Extends Player {
        do {
            $this->setCard($this->dealCard());
        } while ($this->getScore() < $this->goal);
-        
     }
 
 
@@ -38,16 +38,20 @@ class Dealer Extends Player {
         }
 		return false;
     }
-
+    
+    // used to check if player has won to know if dealer should take cards or not.
     public function isPlayerWinner(Player $player) : bool {
-		$playerScore = $player->getScore();
-		if ($playerScore == Player::GAME_GOAL) {
+		if ($player->getScore() == Player::GAME_GOAL) {
 			return true;
         }
-        if (count($player->getHand()) > 4 && !$player->isBusted()) {
+        if ($this->playerWonOnNrOfCards($player)) {
 			return true;
 		}
 		return false;
+    }
+
+    private function playerWonOnNrOfCards(Player $player) : bool {
+        return count($player->getHand()) > self::CARDS_WIN && !$player->isBusted();
     }
    
 }

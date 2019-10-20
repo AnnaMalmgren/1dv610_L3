@@ -31,7 +31,7 @@ class LoginController {
         if ($this->view->userWantsToLogin()) {
             $userCredentials = $this->view->getUserCredentials();
             $this->auth->loginUserByRequest($userCredentials, $this->view->rememberMe());
-            $this->view->setLoggedInView($this->auth->getLoggedInUser());
+            $this->view->setLoggedIn($this->auth->getLoggedInUser());
         }
     }
 
@@ -58,8 +58,8 @@ class LoginController {
 
     public function logoutUser() {
         if ($this->userWantsToLogout()) {
-            $this->view->setLogoutUI();
-            $this->auth->endSession();
+            $this->view->setLogout();
+            $this->auth->logout();
         }
     }
 

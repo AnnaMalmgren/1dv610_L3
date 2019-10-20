@@ -10,17 +10,17 @@ class Card
     private $suit;
     private $rank;
 
-    public function __construct($suit, $rank)
+    public function __construct(string $suit, int $rank)
     {
         $this->suit = $suit;
         $this->rank = $rank;
     }
 
-    public function getSuit() {
+    public function getSuit() : string {
         return $this->suit;
     }
 
-    public function getRank() {
+    public function getRank() : int {
         return $this->rank;
     }
 

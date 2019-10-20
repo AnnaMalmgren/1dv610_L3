@@ -18,28 +18,43 @@ class LoginView {
 	private $username = "";
 	private $messageStyle = "";
 	private $cookieExpiresIn;
+
 	public function __construct() {
 		$this->cookieExpiresIn = time() + (7 * 24 * 60 * 60);
 	}
+
 	public function userWantsToAuthenticate() : bool {
 		return !empty($_COOKIE[self::$cookieName]) && !empty($_COOKIE[self::$cookiePassword]);
-	  }
+	}
+
 	public function userWantsToLogin() : bool {
 		return isset($_POST[self::$login]);
 	}
+
 	public function userWantsToLogout() : bool {
 		return isset($_POST[self::$logout]);
 	}
+
 	public function rememberMe() : bool {
 		return isset($_POST[self::$keep]);
 	}
+	
 	public function getRequestName() : string {
 		return trim($_POST[self::$name]);
 	}
+
 	public function getRequestPwd() : string {
 		return trim($_POST[self::$password]);
 	}
-	
+
+	public function getUserCredentials() : \Model\UserCredentials {
+		if ($this->userWantsToLogin()) {
+			return $this->getLoginCredentials();
+		} else if ($this->userWantsToAuthenticate()) {
+			return $this->getCookieCredentials();
+		}
+	}
+
 	private function getLoginCredentials() : \Model\UserCredentials {
 		if (empty($this->getRequestName())) {
 			throw new UsernameMissingException();
@@ -49,67 +64,63 @@ class LoginView {
 		}
 		return new \Model\UserCredentials($this->getRequestName(), $this->getRequestPwd());
 	}
+
+
 	private function getCookieCredentials() : \Model\UserCredentials {
 		return new \Model\UserCredentials($_COOKIE[self::$cookieName], $_COOKIE[self::$cookiePassword]);
 	}
-	public function getUserCredentials() : \Model\UserCredentials {
-		if ($this->userWantsToLogin()) {
-			return $this->getLoginCredentials();
-		} else if ($this->userWantsToAuthenticate()) {
-			return $this->getCookieCredentials();
-		}
+
+	public function isLoggedIn() {
+		return \Model\Authentication::isUserLoggedIn();
 	}
 
 	private function setAlertDangerStyle() {
 		$this->messageStyle = 'class="alert alert-danger"';
 	}
 
+	private function setAlertInfoStyle() {
+		$this->messageStyle = 'class="alert alert-info"';
+	}
+
 	public function setNoUsernamegMsg() {
 		$this->setAlertDangerStyle();
 		$this->message = "Username is missing";
 	}
+
 	public function setNoPasswordMsg() {
 		$this->setAlertDangerStyle();
 		$this->message = "Password is missing";
 	}
+
 	public function setWrongNameOrPwdMsg() {
 		$this->setAlertDangerStyle();
 		$this->message = "Wrong name or password";
 	}
+
 	public function setWrongAuthCredentialsMsg() {
 		$this->setAlertDangerStyle();
 		$this->message = "Wrong information in cookies";
 	}
 
-	private function setAlertInfoStyle() {
-		$this->messageStyle = 'class="alert alert-info"';
-	}
 	public function setUserRegisteredMsg() {
 		$this->setAlertInfoStyle();
 		$this->message = "Registered new user.";
 	}
+
 	public function setWelcomeBackMsg() {
 		$this->setAlertInfoStyle();
 		$this->message = "Welcome back with cookie";
 	}
-	public function setByeMessage() {
-		$this->setAlertInfoStyle();
-		$this->message = "Bye bye!";
-	}
-	public function isLoggedIn() {
-		return \Model\Authentication::isUserLoggedIn();
-	}
+
 	public function setUsername($username) {
 		$this->username = $username;
 	}
+
 	private function getUsername() : string {
-		if ($this->userWantsToLogin()) {
-			return $this->getRequestName();
-		} else {
-			return $this->username;
-		}
+		return $this->userWantsToLogin() ? $this->getRequestName() : $this->username;
 	}
-	public function setLoggedInView(\Model\User $user) {
+
+	public function setLoggedIn(\Model\User $user) {
 		if ($this->rememberMe()) {
 			$this->setCookies($user);
 			$this->messageStyle = 'class="alert alert-info"';
@@ -119,22 +130,23 @@ class LoginView {
 			$this->message = "Welcome";
 		}
 	}
-    public function setRememberMeUI(\Model\User $user) {
-		$this->setCookies($user);
-		$this->setRememberMeWelcomeMsg();
-	}
+
 	private function setCookies(\Model\User $user) {
 		setcookie(self::$cookieName, $this->getRequestName(), $this->cookieExpiresIn);
 		setcookie(self::$cookiePassword, $user->getTempPassword(), $this->cookieExpiresIn);
 	}
-	public function setLogoutUI() {
+
+	public function setLogout() {
 		$this->removeCookies();
-		$this->setByeMessage();
+		$this->setAlertInfoStyle();
+		$this->message = "Bye bye!";
 	}
+
 	public function removeCookies() {
 		setcookie(self::$cookieName, "", time() - 3600);
 		setcookie(self::$cookiePassword, "", time() - 3600);
 	}
+
 	public function response() {
         if ($this->isLoggedIn()) {
 			return $this->generateLogoutButtonHTML($this->message);
@@ -151,8 +163,7 @@ class LoginView {
 					<input type="submit" name="' . self::$logout . '" value="logout" 
 					class="btn btn-dark"/>
 				</form>
-			</div>
-		';
+			</div>';
 	}
 
 	private function generateLoginFormHTML($message) {

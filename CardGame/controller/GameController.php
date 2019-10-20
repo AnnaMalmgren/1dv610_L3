@@ -17,7 +17,6 @@ class GameController {
     public function startGame() {
         if($this->view->userWantsToStartGame()) {
             $this->game->startGame();
-            $this->view->updatePlayer($this->game->getPlayerHand(), $this->game->getPlayerScore());
             $this->checkPlayerHand();
         }
     }
@@ -31,19 +30,20 @@ class GameController {
     }
 
     private function setPlayerWin() {
-        $this->game->quitGame();
+        $this->view->setUpdatedHands();
         $this->view->setPlayerWon();
+        $this->game->quitGame();
     }
 
     private function setDealerWin() {
-        $this->game->quitGame();
+        $this->view->setUpdatedHands();
         $this->view->setPlayerLost();
+        $this->game->quitGame();
     }
 
     public function playerHit() {
         if($this->view->userWantsACard()) {
             $this->game->dealACard();
-            $this->view->updatePlayer($this->game->getPlayerHand(), $this->game->getPlayerScore());
             $this->checkPlayerHand();
         }
     }
@@ -51,8 +51,6 @@ class GameController {
     public function playerStand() {
         if($this->view->userWantsToStand()) {
             $this->game->hitDealer();
-            $this->view->updatePlayer($this->game->getPlayerHand(), $this->game->getPlayerScore());
-            $this->view->updateDealer($this->game->getDealerHand(), $this->game->getDealerScore());
             $this->getGameResult();
         }
     }
@@ -67,10 +65,8 @@ class GameController {
 
     public function quitGame() {
         if($this->view->userWantsToQuit()) {
-            $this->game->quitGame();
             $this->view->setQuitMsg();
+            $this->game->quitGame();
         }
-
     }
-
 }

@@ -3,13 +3,10 @@
 require_once('LoginSystem/LoginSystemApp.php');
 require_once('CardGame/CardGameApp.php');
 
-
-
 class App {
     private $loginSystem;
     private $cardGameApp;
     private $gameView;
-
 
     public function __construct() {
         $this->loginSystem = new LoginSystemApp();
@@ -29,7 +26,6 @@ class App {
             $this->cardGameApp->startApp();
         } else {
             $this->loginSystem->getChangesLoggedOutState();
-           
         }
     }
 

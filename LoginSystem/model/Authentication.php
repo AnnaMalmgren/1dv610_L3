@@ -26,10 +26,9 @@ class Authentication {
         $this->setUserSession();
     }
 
-    public function loginUserByAuth(UserCredentials $credentials) {
-        $userInfo = $this->storage->validateAuthCredentials($credentials);
-        $this->loggedInUser = $this->storage->getAuthenticatedUser();
-        $this->setUserSession();
+    public function saveCredentials() {
+        $this->loggedInUser->setTempPassword();
+        $this->storage->saveAuthCredentials($this->loggedInUser);
     }
 
     private function setUserSession() {
@@ -42,16 +41,17 @@ class Authentication {
         return $_SERVER["HTTP_USER_AGENT"];
     }
 
-    public function saveCredentials() {
-        $this->loggedInUser->setTempPassword();
-        $this->storage->saveAuthCredentials($this->loggedInUser);
+    public function loginUserByAuth(UserCredentials $credentials) {
+        $userInfo = $this->storage->validateAuthCredentials($credentials);
+        $this->loggedInUser = $this->storage->getAuthenticatedUser();
+        $this->setUserSession();
     }
 
     public function getLoggedInUser() {
         return $this->loggedInUser;
     }
 
-    public function endSession() {
+    public function logout() {
         unset($_SESSION[self::$sessionName]);
         unset($_SESSION[self::$userAgent]);
     }
@@ -60,7 +60,6 @@ class Authentication {
        return isset($_SESSION[self::$sessionName]);
     }
 
-        //TODO FIX!!
     public function controllSession() {
         if (isset($_SESSION[self::$sessionId])){
             if(!$this->checkSession()) {
@@ -70,7 +69,9 @@ class Authentication {
             }
         }
     }
-
+    
+    
+    //TODO FIX PROTECTION SESSION HIJACKING.
     private function checkSession() {
         if (!$this->getClientsBrowserName()) {
             return FALSE;

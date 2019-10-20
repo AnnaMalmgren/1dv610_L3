@@ -16,10 +16,22 @@ class CardGameApp {
     }
 
     public function startApp() {
-        $this->gameHandler->startGame();
-        $this->gameHandler->playerHit();
-        $this->gameHandler->playerStand();
-        $this->gameHandler->quitGame();
+        $this->stateChanges();
+        $this->updateView();
+    }
+
+    private function stateChanges() {
+        if ($this->gameTable->isGameOn()) {
+            $this->gameHandler->playerHit();
+            $this->gameHandler->playerStand();
+            $this->gameHandler->quitGame();
+        } else {
+            $this->gameHandler->startGame();
+        }
+    }
+
+    private function updateView() {
+        $this->gameView->setUpdatedHands();
     }
 
     public function getGameView() {
