@@ -10,10 +10,11 @@ class Player {
     const NO_CARDS = 0;
 
     public function __construct() {
+        // add class name to cardstorage to create different arrays for player and dealer cards.
         $this->cardStorage = new CardStorage(get_class($this));
     }
 
-    public function setCard (Card $card) {
+    public function addCardToHand (Card $card) {
        $this->cardStorage->saveCard($card); 
     }
 
@@ -61,6 +62,7 @@ class Player {
 
     private function getScores($ranks, $aces) {
         foreach($aces as $ace) {
+            //If total score + 14 is over 21 Ace rank is changed to 1. 
             if (array_sum($ranks) + $ace->getRank() > self::GAME_GOAL) {
                 $ace->setLowAceRank();
                 array_push($ranks, $ace->getRank());

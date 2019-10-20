@@ -34,6 +34,11 @@ class Deck {
     }
 
     public function getACard() : Card {
+        if (empty($this->cards)) {
+            $this->setDeckOfCards();
+            $this->shuffle();
+        }
+        
        return array_pop($this->cards);
     }
 

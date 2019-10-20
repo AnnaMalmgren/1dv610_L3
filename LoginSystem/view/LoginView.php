@@ -71,7 +71,7 @@ class LoginView {
 		return new \Model\UserCredentials($_COOKIE[self::$cookieName], $_COOKIE[self::$cookiePassword]);
 	}
 
-	public function isLoggedIn() {
+	public function isLoggedIn() : bool {
 		$auth = new \Model\Authentication();
 		return $auth->isUserLoggedIn();
 	}
@@ -104,18 +104,15 @@ class LoginView {
 		$this->message = "Wrong information in cookies";
 	}
 
-	public function setUserRegisteredMsg() {
+	public function setUserRegisteredMsg(string $username) {
 		$this->setAlertInfoStyle();
+		$this->username = $username;
 		$this->message = "Registered new user.";
 	}
 
 	public function setWelcomeBackMsg() {
 		$this->setAlertInfoStyle();
 		$this->message = "Welcome back with cookie";
-	}
-
-	public function setUsername($username) {
-		$this->username = $username;
 	}
 
 	private function getUsername() : string {

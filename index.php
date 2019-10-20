@@ -13,8 +13,11 @@ ini_set('session.cookie_secure', 'On');
 ini_set('session.cookie_samesite', 'Strict');
 ini_set( 'session.use_trans_sid', FALSE );
 
+
 $app = new App();
 $app->runApp();
+
+
 
 
 

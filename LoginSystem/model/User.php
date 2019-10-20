@@ -13,12 +13,12 @@ class User {
     private $minPassswordLength = 6;
     private $bytesLength = 12;
 
-    public function __construct($username, $password) {
+    public function __construct(string $username, string $password) {
         $this->setUsername($username);
         $this->setPassword($password);
     }
 
-    private function setUsername($username) {
+    private function setUsername(string $username) {
         if (strlen($username) < $this->minUsernameLength) {
             throw new ToShortUserNameException();
         }
@@ -31,7 +31,7 @@ class User {
         $this->username = $username;
     }
 
-    private function setPassword($password) {
+    private function setPassword(string $password) {
         if (strlen($password) < $this->minPassswordLength) {
             throw new ToShortPasswordException();
         }
@@ -39,15 +39,15 @@ class User {
         $this->password = $password;
     }
 
-    public function getUsername() {
+    public function getUsername() : string {
         return $this->username;
     }
 
-    public function getPassword() {
+    public function getPassword() : string {
         return $this->password;
     }
 
-    public function getTempPassword() {
+    public function getTempPassword() : string {
         return $this->tempPassword;
     }
 

@@ -17,7 +17,7 @@ class Authentication {
     }
 
     public function loginUserByRequest(UserCredentials $credentials, bool $rememberMe) {
-        $userInfo = $this->storage->validateRequestCredentials($credentials);
+        $this->storage->validateRequestCredentials($credentials);
         $this->loggedInUser = $this->storage->getAuthenticatedUser();
 
         if ($rememberMe) {
@@ -43,7 +43,7 @@ class Authentication {
     }
 
     public function loginUserByAuth(UserCredentials $credentials) {
-        $userInfo = $this->storage->validateAuthCredentials($credentials);
+        $this->storage->validateAuthCredentials($credentials);
         $this->loggedInUser = $this->storage->getAuthenticatedUser();
         $this->setUserSession();
     }
@@ -64,5 +64,4 @@ class Authentication {
     public function validateUserBrowser() : bool {
         return $_SESSION[self::$userAgent] === md5($this->getClientsBrowserName());
     }
-
 }

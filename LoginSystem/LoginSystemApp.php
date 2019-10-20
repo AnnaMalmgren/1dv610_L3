@@ -40,8 +40,7 @@ class LoginSystemApp {
 
     public function renderViews($loggedInView) {   
         if ($this->regController->getUserIsRegistered()) {
-            $this->loginView->setUserRegisteredMsg();
-            $this->loginView->setUsername($this->regController->getRegUsername());
+            $this->loginView->setUserRegisteredMsg($this->regController->getRegUsername());
             $this->renderLoginView($loggedInView); 
         } else {
             $this->view->userClicksRegisterLink() ? 

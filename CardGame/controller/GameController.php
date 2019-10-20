@@ -2,7 +2,6 @@
 namespace Controller;
 
 require_once(__DIR__ . "/../model/GameTableFacade.php");
-require_once(__DIR__ . "/../model/Deck.php");
 
 class GameController {
     

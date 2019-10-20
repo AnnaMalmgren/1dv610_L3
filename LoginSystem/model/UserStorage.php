@@ -63,7 +63,7 @@ class UserStorage {
         return password_verify($credentials->getPassword(), $userData[self::$colTempPwd]);
     }
 
-    public function getAuthenticatedUser() {
+    public function getAuthenticatedUser() : User {
         return $this->authenticatedUser;
     }
 

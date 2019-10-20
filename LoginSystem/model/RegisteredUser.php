@@ -24,7 +24,7 @@ class RegisteredUser {
         }
     }
 
-    public function getRegisteredUsersName() {
+    public function getRegisteredUsersName() : string {
         return $this->registeredUser->getUsername();
     }
 }
