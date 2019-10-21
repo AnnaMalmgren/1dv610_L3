@@ -44,5 +44,4 @@ require_once('DBHandler.php');
         $cookieExpiresIn = time() + (7 * 24 * 60 * 60);
         return date("Y-m-d H:i:s", $cookieExpiresIn);
     }
-
- }
+}

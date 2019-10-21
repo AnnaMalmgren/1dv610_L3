@@ -62,6 +62,5 @@ require_once("dbproduction.php");
         $this->bindQueryParams($stmt, $types, $paramValues);
         mysqli_stmt_execute($stmt);  
     }
-     
- }
+}
 

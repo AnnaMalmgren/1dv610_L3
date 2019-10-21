@@ -5,14 +5,14 @@ require_once(__DIR__ . '/../model/User.php');
 require_once('Exceptions/UserCredentialsException.php');
 
 class RegisterView extends LoginView {
-	private static $name = 'RegisterView::UserName';
+    private static $name = 'RegisterView::UserName';
 	private static $password = 'RegisterView::Password';
 	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
 	private static $messageId = 'RegisterView::Message';
 	private static $register = 'RegisterView::Register';
 	private $message = "";
 	private $messageStyle = "";
-	
+
 	public function getRequestName() : string {
 		return trim($_POST[self::$name]);
 	}

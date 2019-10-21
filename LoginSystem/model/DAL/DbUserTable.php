@@ -23,4 +23,4 @@ require_once('DBHandler.php');
     private function hashedPassword(User $user) {
         return password_hash($user->getPassword(), PASSWORD_DEFAULT); 
     }
- }
+}
