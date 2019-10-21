@@ -14,7 +14,7 @@ class CardStorage {
         return isset($_SESSION[$this->nameOfHand]);
     }
     
-	public function saveCard(Card $toBeSaved) {
+    public function saveCard(Card $toBeSaved) {
         if ($this->hasHand()) {
             array_push($_SESSION[$this->nameOfHand], $toBeSaved);
         } else {

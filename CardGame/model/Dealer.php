@@ -34,8 +34,7 @@ class Dealer Extends Player {
         } else if ($dealerScore >= $playerScore && !$this->isBusted()) {
             return true;
         }
-
-		return false;
+        return false;
     }
     
     // used to check if player has won to know if dealer should take cards or not.

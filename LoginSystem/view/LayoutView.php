@@ -8,12 +8,12 @@ class LayoutView {
   private $bootstrapCSS = '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">';
   private $exceptionMsg = "";
 
-	public function userClicksRegisterLink() : bool {
-		return isset($_GET[self::$registerLink]);
+  public function userClicksRegisterLink() : bool {
+    return isset($_GET[self::$registerLink]);
   }
   
   public function setCharset(string $newCharSet) {
-		$this->charset = $newCharSet;
+    $this->charset = $newCharSet;
   }
 
   public function setExceptionMsg() {
@@ -37,22 +37,18 @@ class LayoutView {
               ' . $v->response($isLoggedIn) . ' 
           </div>
           <div class="container">
-              ' . $gameView->response($isLoggedIn) . '
-
-              ' . $this->exceptionMsg . '
-              
-              ' . $dtv->show() . '
+            ' . $gameView->response($isLoggedIn) . '
+            ' . $this->exceptionMsg . '
+            ' . $dtv->show() . '
           </div>
         </body>
-      </html>
-    ';
+        </html>';
   }
 
   private function renderIsLoggedIn($isLoggedIn) {
     if ($isLoggedIn) {
       return '<h2 class="text-muted d-flex justify-content-start">Logged in</h2>';
-    }
-    else {
+    } else {
       return '<h2 class="text-muted d-flex justify-content-start">Not logged in</h2>';
     }
   }

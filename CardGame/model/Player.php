@@ -51,7 +51,6 @@ class Player {
 
     private function getRanksWithoutAces(array $cards) {
         $cardRanks = Array();
-
         foreach($cards as $card) {
             if (!$card->isAce()) {
                 array_push($cardRanks, $card->getRank());
@@ -70,7 +69,6 @@ class Player {
                 array_push($ranks, $ace->getRank());
             }
         }
-
         return $ranks;
     }
 

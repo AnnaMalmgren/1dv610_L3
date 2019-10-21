@@ -23,7 +23,7 @@ class LoginView {
 	public function __construct() {
 		$this->cookieExpiresIn = time() + (7 * 24 * 60 * 60);
 	}
-
+	
 	public function userWantsToAuthenticate() : bool {
 		return !empty($_COOKIE[self::$cookieName]) && !empty($_COOKIE[self::$cookiePassword]);
 	}
@@ -31,11 +31,11 @@ class LoginView {
 	public function userWantsToLogin() : bool {
 		return isset($_POST[self::$login]);
 	}
-
+	
 	public function userWantsToLogout() : bool {
 		return isset($_POST[self::$logout]);
 	}
-
+	
 	public function rememberMe() : bool {
 		return isset($_POST[self::$keep]);
 	}
@@ -43,11 +43,11 @@ class LoginView {
 	public function getRequestName() : string {
 		return trim($_POST[self::$name]);
 	}
-
+	
 	public function getRequestPwd() : string {
 		return trim($_POST[self::$password]);
 	}
-
+	
 	public function getUserCredentials() : \Model\UserCredentials {
 		if ($this->userWantsToLogin()) {
 			return $this->getLoginCredentials();
@@ -55,7 +55,7 @@ class LoginView {
 			return $this->getCookieCredentials();
 		}
 	}
-
+	
 	private function getLoginCredentials() : \Model\UserCredentials {
 		if (empty($this->getRequestName())) {
 			throw new UsernameMissingException();
@@ -65,8 +65,7 @@ class LoginView {
 		}
 		return new \Model\UserCredentials($this->getRequestName(), $this->getRequestPwd());
 	}
-
-
+	
 	private function getCookieCredentials() : \Model\UserCredentials {
 		return new \Model\UserCredentials($_COOKIE[self::$cookieName], $_COOKIE[self::$cookiePassword]);
 	}
@@ -75,7 +74,7 @@ class LoginView {
 		$auth = new \Model\Authentication();
 		return $auth->isUserLoggedIn();
 	}
-
+	
 	private function setAlertDangerStyle() {
 		$this->messageStyle = 'class="alert alert-danger"';
 	}
@@ -93,23 +92,22 @@ class LoginView {
 		$this->setAlertDangerStyle();
 		$this->message = "Password is missing";
 	}
-
+	
 	public function setWrongNameOrPwdMsg() {
 		$this->setAlertDangerStyle();
 		$this->message = "Wrong name or password";
 	}
-
+	
 	public function setWrongAuthCredentialsMsg() {
 		$this->setAlertDangerStyle();
 		$this->message = "Wrong information in cookies";
 	}
-
+	
 	public function setUserRegisteredMsg(string $username) {
 		$this->setAlertInfoStyle();
 		$this->username = $username;
 		$this->message = "Registered new user.";
 	}
-
 	public function setWelcomeBackMsg() {
 		$this->setAlertInfoStyle();
 		$this->message = "Welcome back with cookie";
@@ -118,7 +116,7 @@ class LoginView {
 	private function getUsername() : string {
 		return $this->userWantsToLogin() ? $this->getRequestName() : $this->username;
 	}
-
+	
 	public function setLoggedIn(\Model\User $user) {
 		if ($this->rememberMe()) {
 			$this->setCookies($user);
@@ -129,25 +127,25 @@ class LoginView {
 			$this->message = "Welcome";
 		}
 	}
-
+	
 	private function setCookies(\Model\User $user) {
 		setcookie(self::$cookieName, $this->getRequestName(), $this->cookieExpiresIn);
 		setcookie(self::$cookiePassword, $user->getTempPassword(), $this->cookieExpiresIn);
 	}
-
+	
 	public function setLogout() {
 		$this->removeCookies();
 		$this->setAlertInfoStyle();
 		$this->message = "Bye bye!";
 	}
-
+	
 	public function removeCookies() {
 		setcookie(self::$cookieName, "", time() - 3600);
 		setcookie(self::$cookiePassword, "", time() - 3600);
 	}
 
 	public function response() {
-        if ($this->isLoggedIn()) {
+		if ($this->isLoggedIn()) {
 			return $this->generateLogoutButtonHTML($this->message);
 		} else {
 			return $this->generateLoginFormHTML($this->message);
@@ -164,10 +162,10 @@ class LoginView {
 				</form>
 			</div>';
 	}
-
+	
 	private function generateLoginFormHTML($message) {
 		return '
-			<div class="container m-3">
+		    <div class="container m-3">
 				<a href="?register" class="text-decoration-none mt-3 mb-2 text-primary">Register a new user</a>
 				<form method="post" action="?" class="w-50"> 
 					<legend>Login - enter Username and password</legend>
@@ -186,8 +184,8 @@ class LoginView {
 						<label for="' . self::$keep . '">Keep me logged in  :</label>
 						<input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
 					</div>
-						<input type="submit" name="' . self::$login . '" value="login" 
-						class="btn btn-primary mt-2 mb-2"/>
+					<input type="submit" name="' . self::$login . '" value="login" 
+					class="btn btn-primary mt-2 mb-2"/>
 				</form>
 			</div>';
 	}

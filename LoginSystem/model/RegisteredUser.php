@@ -11,8 +11,8 @@ class RegisteredUser {
     private $registeredUser;
 
     public function __construct(UserCredentials $user) {
-            $this->storage = new DbUserTable();
-            $this->setRegisteredUser($user);
+        $this->storage = new DbUserTable();
+        $this->setRegisteredUser($user);
     }
 
      public function setRegisteredUser(UserCredentials $credentials) {
@@ -20,7 +20,6 @@ class RegisteredUser {
         if ($this->storage->getUser($credentials)) {
             throw new UsernameExistsException();
         }
-
         $this->storage->saveUser($this->registeredUser);
     }
 

@@ -6,14 +6,13 @@ require_once('Exceptions/UserCredentialsException.php');
 
 class RegisterView extends LoginView {
 	private static $name = 'RegisterView::UserName';
-    private static $password = 'RegisterView::Password';
-    private static $passwordRepeat = 'RegisterView::PasswordRepeat';
+	private static $password = 'RegisterView::Password';
+	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
 	private static $messageId = 'RegisterView::Message';
 	private static $register = 'RegisterView::Register';
 	private $message = "";
 	private $messageStyle = "";
 	
-
 	public function getRequestName() : string {
 		return trim($_POST[self::$name]);
 	}
@@ -21,7 +20,7 @@ class RegisterView extends LoginView {
 	public function getRequestPwd() : string {
 		return trim($_POST[self::$password]);
 	}
-
+	
 	public function getRequestPwdRepeat() : string {
 		return trim($_POST[self::$passwordRepeat]);
 	}
@@ -62,7 +61,7 @@ class RegisterView extends LoginView {
 			$userNameMsg = 'Username has too few characters, at least 3 characters.';
 			$PwdMsg = 'Password has too few characters, at least 6 characters.';
 			$this->message = "$userNameMsg<br>$PwdMsg";
-		} 
+		}
 	}
 
 	public function setToShortUsernameMessage() {
@@ -107,19 +106,18 @@ class RegisterView extends LoginView {
 						value="' . $this->getFilteredName() . '" class="form-control"/>
 					</div>
 					<div class="form-group">
-						<label for="' . self::$password . '">Password :</label>
-						<input type="password" id="' . self::$password . '" name="' . self::$password . '" 
+					    <label for="' . self::$password . '">Password :</label>
+					    <input type="password" id="' . self::$password . '" name="' . self::$password . '" 
 						class="form-control"/>
-					</div>	
+					</div>
 					<div class="form-group">
-                    	<label for="' . self::$passwordRepeat . '">Repeat password :</label>
-						<input type="password" id="' . self::$passwordRepeat . '" 
+					    <label for="' . self::$passwordRepeat . '">Repeat password :</label>
+					    <input type="password" id="' . self::$passwordRepeat . '" 
 						name="' . self::$passwordRepeat . '" class="form-control" />
 					</div>
-						<input id ="submit" type="submit" name=' . self::$register . ' value="Register" 
-						class="btn btn-primary mt-2 mb-2"/>
+					<input id ="submit" type="submit" name=' . self::$register . ' value="Register" 
+					class="btn btn-primary mt-2 mb-2"/>
 				</form>
 			</div>';
 	}
-
 }
