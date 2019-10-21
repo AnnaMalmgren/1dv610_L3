@@ -117,7 +117,7 @@ class RegisterView extends LoginView {
                     </div>
                     <input id ="submit" type="submit" name=' . self::$register . ' value="Register" 
                     class="btn btn-primary mt-2 mb-2"/>
-				</form>
+                </form>
             </div>';
     }
 }
