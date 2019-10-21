@@ -29,10 +29,10 @@ class LoginView {
     }
 
     public function userWantsToLogin() : bool {
-		return isset($_POST[self::$login]);
-	}
+        return isset($_POST[self::$login]);
+    }
 	
-	public function userWantsToLogout() : bool {
+    public function userWantsToLogout() : bool {
         return isset($_POST[self::$logout]);
     }
 	
@@ -62,7 +62,7 @@ class LoginView {
         } 
         if (empty( $this->getRequestPwd())) {
             throw new PasswordMissingException();
-	    }
+        }
         return new \Model\UserCredentials($this->getRequestName(), $this->getRequestPwd());
     }
 	
