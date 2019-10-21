@@ -7,7 +7,7 @@ require_once('Exceptions/UserCredentialsException.php');
 class RegisterView extends LoginView {
     private static $name = 'RegisterView::UserName';
     private static $password = 'RegisterView::Password';
-	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
+    private static $passwordRepeat = 'RegisterView::PasswordRepeat';
     private static $messageId = 'RegisterView::Message';
     private static $register = 'RegisterView::Register';
     private $message = "";
@@ -30,7 +30,7 @@ class RegisterView extends LoginView {
     }
 
     private function getFilteredName() : string {
-		return $this->userWantsToRegister() ? strip_tags($this->getRequestName()) : "";
+        return $this->userWantsToRegister() ? strip_tags($this->getRequestName()) : "";
     }
 
     public function getRegUserCredentials() : \Model\UserCredentials {
@@ -86,7 +86,7 @@ class RegisterView extends LoginView {
 
     public function setPwdsDontMatchMessage() {
         $this->setAlertDangerStyle();
-		$this->message = 'Passwords do not match.'; 
+        $this->message = 'Passwords do not match.'; 
     }
 
     public function response() {
@@ -95,29 +95,29 @@ class RegisterView extends LoginView {
 
     private function generateRegisterFormHTML($message) {
         return '
-			<div class="container m-3">
-               <a href="?" class="text-decoration-none mt-3 mb-2 text-primary">Back to login</a>
-               <form action="?register" method="post" enctype="multipart/form-data" class="w-50">
+            <div class="container m-3">
+                <a href="?" class="text-decoration-none mt-3 mb-2 text-primary">Back to login</a>
+                <form action="?register" method="post" enctype="multipart/form-data" class="w-50">
                     <legend>Register a new user - Write username and password</legend>
                     <p id="' . self::$messageId . '" ' . $this->messageStyle . '>' . $message . '</p>
                     <div class="form-group">	
-						<label for="' . self::$name . '">Username :</label>
-						<input type="text" id="' . self::$name . '" name="' . self::$name . '" 
-						value="' . $this->getFilteredName() . '" class="form-control"/>
-					</div>
-					<div class="form-group">
-					    <label for="' . self::$password . '">Password :</label>
-					    <input type="password" id="' . self::$password . '" name="' . self::$password . '" 
-						class="form-control"/>
-					</div>
-					<div class="form-group">
-					    <label for="' . self::$passwordRepeat . '">Repeat password :</label>
-					    <input type="password" id="' . self::$passwordRepeat . '" 
-						name="' . self::$passwordRepeat . '" class="form-control" />
-					</div>
-					<input id ="submit" type="submit" name=' . self::$register . ' value="Register" 
-					class="btn btn-primary mt-2 mb-2"/>
+                        <label for="' . self::$name . '">Username :</label>
+                        <input type="text" id="' . self::$name . '" name="' . self::$name . '" 
+                        value="' . $this->getFilteredName() . '" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="' . self::$password . '">Password :</label>
+                        <input type="password" id="' . self::$password . '" name="' . self::$password . '" 
+                        class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="' . self::$passwordRepeat . '">Repeat password :</label>
+						<input type="password" id="' . self::$passwordRepeat . '"  
+                        name="' . self::$passwordRepeat . '" class="form-control" />
+                    </div>
+                    <input id ="submit" type="submit" name=' . self::$register . ' value="Register" 
+                    class="btn btn-primary mt-2 mb-2"/>
 				</form>
-			</div>';
-	}
+            </div>';
+    }
 }
